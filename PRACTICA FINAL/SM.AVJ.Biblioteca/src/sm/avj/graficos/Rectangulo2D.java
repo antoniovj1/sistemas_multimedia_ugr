@@ -160,7 +160,7 @@ public class Rectangulo2D extends java.awt.geom.Rectangle2D.Double
 
     @Override
     public Point2D getPointFin() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.p2;
     }
 
     @Override

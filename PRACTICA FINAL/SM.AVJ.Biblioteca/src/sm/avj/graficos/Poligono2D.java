@@ -7,6 +7,7 @@ package sm.avj.graficos;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
@@ -18,7 +19,7 @@ import java.awt.geom.Point2D;
 public final class Poligono2D extends Polygon
         implements miShape {
 
-    Atributos attr= new Atributos();
+    Atributos attr = new Atributos();
 
     public Poligono2D() {
         super();
@@ -30,7 +31,7 @@ public final class Poligono2D extends Polygon
     }
 
     public void addPoint(Point2D p) {
-        this.addPoint((int)p.getX(), (int)p.getY());
+        this.addPoint((int) p.getX(), (int) p.getY());
     }
 
     @Override
@@ -45,7 +46,7 @@ public final class Poligono2D extends Polygon
 
     @Override
     public Point2D getPointIni() {
-        Point2D p = new Point2D.Double(this.xpoints[0],this.ypoints[0]);
+        Point2D p = new Point2D.Double(this.xpoints[0], this.ypoints[0]);
         return p;
     }
 
@@ -55,16 +56,16 @@ public final class Poligono2D extends Polygon
      */
     public void setLocation(Point2D pos) {
         //this.translate((int)pos.getX(),(int)pos.getY() );
-        for(int i = 0 ;i < this.npoints; i++){
-            this.xpoints[i] = (int) (this.xpoints[i]+pos.getX());
-            this.ypoints[i] = (int) (this.ypoints[i]+pos.getY());
+        for (int i = 0; i < this.npoints; i++) {
+            this.xpoints[i] = (int) (this.xpoints[i] + pos.getX());
+            this.ypoints[i] = (int) (this.ypoints[i] + pos.getY());
         }
         this.invalidate();
     }
 
-  @Override
+    @Override
     public void paint(Graphics2D g2d) {
-        
+
         attr.conf(g2d);
 
         if (isRelleno()) {
@@ -126,7 +127,7 @@ public final class Poligono2D extends Polygon
 
     @Override
     public Point2D getPointFin() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new Point2D.Double(this.xpoints[npoints-1], this.ypoints[npoints-1]);
     }
 
     @Override
@@ -136,8 +137,8 @@ public final class Poligono2D extends Polygon
 
     @Override
     public float getTransparenciaVlaue() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        return attr.getTrnaspareciaValue();
 
+    }
 
 }

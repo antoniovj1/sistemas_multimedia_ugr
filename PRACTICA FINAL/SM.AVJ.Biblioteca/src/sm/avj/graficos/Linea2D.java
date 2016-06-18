@@ -94,7 +94,7 @@ public class Linea2D extends java.awt.geom.Line2D.Double
         pIni.setLocation(pIni.getX() + pos.getX(), pIni.getY() + pos.getY());
         pFin.setLocation(pFin.getX() + pos.getX(), pFin.getY() + pos.getY());
 
-        this.setLine(pIni,pFin);
+        this.setLine(pIni, pFin);
     }
 
     @Override
@@ -138,7 +138,7 @@ public class Linea2D extends java.awt.geom.Line2D.Double
     public void setTransparencia(boolean transparencia) {
         attr.setTransparencia(transparencia);
     }
-    
+
     @Override
     public boolean isRelleno() {
         return attr.isRelleno();
@@ -176,7 +176,8 @@ public class Linea2D extends java.awt.geom.Line2D.Double
 
     @Override
     public float getTransparenciaVlaue() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return attr.getTrnaspareciaValue();
+
     }
 
 }

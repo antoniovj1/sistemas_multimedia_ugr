@@ -161,17 +161,17 @@ public class Elipse2D extends java.awt.geom.Ellipse2D.Double
 
     @Override
     public Point2D getPointFin() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.p2;
     }
 
     @Override
     public void setTransparenciaValue(float val) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        attr.setTransparenciaValue(val);
     }
 
     @Override
     public float getTransparenciaVlaue() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return attr.getTrnaspareciaValue();
     }
 
 }
