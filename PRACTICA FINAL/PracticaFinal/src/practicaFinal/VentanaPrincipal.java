@@ -54,9 +54,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     VentanaInterna bending = null;
 
     final float dash1[] = {10.0f};
-    final float dash2[] = {20.0f, 9.0f, 3.0f, 9.0f };
+    final float dash2[] = {20.0f, 9.0f, 3.0f, 9.0f};
     final float dash3[] = {3.0f};
-    final float dash4[] = {10.0f,0.0f};
+    final float dash4[] = {10.0f, 0.0f};
 
     final float dashes[][] = {dash1, dash2, dash3, dash4};
 
@@ -148,6 +148,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         miVerToolsBar = new javax.swing.JCheckBoxMenuItem();
         menuImagen = new javax.swing.JMenu();
         cambiarTamanioImagen = new javax.swing.JMenuItem();
+        duplicarImagen = new javax.swing.JMenuItem();
         menuDibujo = new javax.swing.JMenu();
         cambiarTamanioLienzo = new javax.swing.JMenuItem();
         selecionColores = new javax.swing.JMenuItem();
@@ -625,6 +626,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         menuImagen.add(cambiarTamanioImagen);
+
+        duplicarImagen.setText("Duplicar");
+        duplicarImagen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                duplicarImagenActionPerformed(evt);
+            }
+        });
+        menuImagen.add(duplicarImagen);
 
         barraMenu.add(menuImagen);
 
@@ -1323,6 +1332,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_menuStrokeActionPerformed
 
+    private void duplicarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_duplicarImagenActionPerformed
+        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        if (vi != null) {
+            VentanaInterna vn = new VentanaInterna(this);
+            vn.getLienzo().setImage(vi.getLienzo().getImage(true));
+            this.escritorio.add(vn);
+            vn.setTitle(vi.getTitle() + "(Copia)");
+            vn.setVisible(true);
+        }
+    }//GEN-LAST:event_duplicarImagenActionPerformed
+
     /**
      * @param w
      * @return
@@ -1373,6 +1393,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem cambiarTamanioImagen;
     private javax.swing.JMenuItem cambiarTamanioLienzo;
     private javax.swing.JComboBox<String> comboBoxFiltros;
+    private javax.swing.JMenuItem duplicarImagen;
     protected javax.swing.JDesktopPane escritorio;
     private javax.swing.ButtonGroup grupoBotonesFormas;
     private javax.swing.JPanel jPanel1;
