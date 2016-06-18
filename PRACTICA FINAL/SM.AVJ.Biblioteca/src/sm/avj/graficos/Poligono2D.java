@@ -127,7 +127,7 @@ public final class Poligono2D extends Polygon
 
     @Override
     public Point2D getPointFin() {
-        return new Point2D.Double(this.xpoints[npoints-1], this.ypoints[npoints-1]);
+        return new Point2D.Double(this.xpoints[npoints - 1], this.ypoints[npoints - 1]);
     }
 
     @Override
@@ -138,7 +138,15 @@ public final class Poligono2D extends Polygon
     @Override
     public float getTransparenciaVlaue() {
         return attr.getTrnaspareciaValue();
-
     }
 
+    @Override
+    public void setStrokeDash(float[] dash) {
+        attr.setStrokeDash(dash);
+    }
+
+    @Override
+    public void setStrokeWidth(float w) {
+        attr.setStrokeWidth(w);
+    }
 }

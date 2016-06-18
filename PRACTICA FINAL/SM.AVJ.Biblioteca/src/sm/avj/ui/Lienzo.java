@@ -265,6 +265,18 @@ public class Lienzo extends javax.swing.JPanel {
         }
     }
 
+    public void setStrokeDash(float[] dash) {
+        if (sh != null) {
+            sh.setStrokeDash(dash);
+        }
+    }
+    
+    public void setStrokeWidth(float w) {
+        if(sh != null){
+            sh.setStrokeWidth(w);
+        }
+    }
+
     public boolean isRelleno() {
         if (sh != null) {
             return sh.isRelleno();

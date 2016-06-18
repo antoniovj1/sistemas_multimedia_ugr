@@ -69,6 +69,10 @@ public interface miShape extends java.awt.Shape {
     Stroke getStroke();
 
     void setStroke(Stroke stroke);
+    
+    void setStrokeDash(float [] dash);
+    
+    void setStrokeWidth(float w);
 
     public boolean isAlisado();
 

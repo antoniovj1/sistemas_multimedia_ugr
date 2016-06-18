@@ -5,6 +5,7 @@
  */
 package practicaFinal;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -101,11 +102,12 @@ public class VentanaInterna extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void updateParent() {
-        if (lienzo.isFigSelected()) {
+        if (lienzo.isFigSelected() && lienzo.isEditar()) {
             this.ventanaPadre.botonRelleno.setSelected(lienzo.isRelleno());
             this.ventanaPadre.botonAlisar.setSelected(lienzo.isAlisado());
             this.ventanaPadre.botonTransparencia.setSelected(lienzo.isTransparencia());
             this.ventanaPadre.spinnerGrosor.setValue(lienzo.getStrokeWidth().intValue());
+            this.ventanaPadre.setStrokeDash(((BasicStroke)lienzo.getStroke()).getDashArray());
             this.ventanaPadre.menuColores.setBackground(lienzo.getColor());
         }
 
@@ -117,6 +119,7 @@ public class VentanaInterna extends javax.swing.JInternalFrame {
         this.ventanaPadre.spinnerGrosor.setEnabled(actv);
         this.ventanaPadre.menuColores.setEnabled(actv);
         this.ventanaPadre.sliderTransparencia.setVisible(actv);
+        this.ventanaPadre.menuStroke.setEnabled(actv);
 
         switch (lienzo.getForma()) {
             case PUNTO:

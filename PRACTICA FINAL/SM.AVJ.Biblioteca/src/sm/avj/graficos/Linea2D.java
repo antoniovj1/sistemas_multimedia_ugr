@@ -177,7 +177,15 @@ public class Linea2D extends java.awt.geom.Line2D.Double
     @Override
     public float getTransparenciaVlaue() {
         return attr.getTrnaspareciaValue();
-
     }
 
+    @Override
+    public void setStrokeDash(float[] dash) {
+        attr.setStrokeDash(dash);
+    }
+
+    @Override
+    public void setStrokeWidth(float w) {
+        attr.setStrokeWidth(w);
+    }
 }

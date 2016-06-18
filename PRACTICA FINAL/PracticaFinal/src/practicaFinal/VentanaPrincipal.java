@@ -5,11 +5,9 @@
  */
 package practicaFinal;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -21,15 +19,19 @@ import java.awt.image.LookupTable;
 import java.awt.image.RescaleOp;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import sm.avj.imagen.SepiaOp;
 import sm.avj.ui.SelectorColoresDialog;
+import sm.avj.ui.StrokeCellRenderer;
 import sm.avj.ui.resizeDialog;
 import sm.image.BlendOp;
 import sm.image.KernelProducer;
@@ -50,6 +52,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     BufferedImage imagenBendAux2 = null;
     //float alfa_bend = 0.5f;
     VentanaInterna bending = null;
+
+    final float dash1[] = {10.0f};
+    final float dash2[] = {20.0f, 9.0f, 3.0f, 9.0f };
+    final float dash3[] = {3.0f};
+    final float dash4[] = {10.0f,0.0f};
+
+    final float dashes[][] = {dash1, dash2, dash3, dash4};
 
     /**
      * Creates new form VentanaPincipal
@@ -90,6 +99,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         menuColores = new javax.swing.JComboBox(colors);
         jSeparator3 = new javax.swing.JToolBar.Separator();
         spinnerGrosor = new javax.swing.JSpinner();
+        ImageIcon stk1 = new javax.swing.ImageIcon(getClass().getResource("/iconos/stk1.png"),"stk1");
+        ImageIcon stk2 = new javax.swing.ImageIcon(getClass().getResource("/iconos/stk2.png"),"stk2");
+        ImageIcon stk3 = new javax.swing.ImageIcon(getClass().getResource("/iconos/stk3.png"),"stk3");
+        ImageIcon stk4 = new javax.swing.ImageIcon(getClass().getResource("/iconos/stk4.png"),"stk4");
+
+        Icon icons[] = {stk1,stk2,stk3,stk4};
+        menuStroke = new javax.swing.JComboBox(icons);
         botonRelleno = new javax.swing.JToggleButton();
         botonTransparencia = new javax.swing.JToggleButton();
         sliderTransparencia = new javax.swing.JSlider();
@@ -283,6 +299,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         barraHerramientas.add(spinnerGrosor);
+
+        menuStroke.setRenderer(new StrokeCellRenderer());
+        menuStroke.setSelectedIndex(3);
+        menuStroke.setMaximumRowCount(4);
+        menuStroke.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuStrokeActionPerformed(evt);
+            }
+        });
+        barraHerramientas.add(menuStroke);
 
         botonRelleno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/rellenar.png"))); // NOI18N
         botonRelleno.setFocusable(false);
@@ -682,8 +708,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void spinnerGrosorStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinnerGrosorStateChanged
         VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
         if (vi != null) {
-            Stroke st = new BasicStroke((Integer) this.spinnerGrosor.getValue());
-            vi.getLienzo().setStroke(st);
+            vi.getLienzo().setStrokeWidth(Integer.parseInt(this.spinnerGrosor.getValue().toString()));
         }
         this.repaint();
     }//GEN-LAST:event_spinnerGrosorStateChanged
@@ -1247,7 +1272,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
         if (vi != null) {
             SelectorColoresDialog sc = new SelectorColoresDialog(this, true);
-            
+
             sc.setColor(vi.getLienzo().getColor());
             sc.setVisible(true);
 
@@ -1255,10 +1280,48 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 vi.getLienzo().setColor(sc.getColor());
                 this.menuColores.setBackground(sc.getColor());
             }
-            
+
             repaint();
         }
     }//GEN-LAST:event_selecionColoresActionPerformed
+
+    protected void setStrokeDash(float[] dash) {
+        if (Arrays.equals(dash, dash1)) {
+            this.menuStroke.setSelectedIndex(0);
+        } else if (Arrays.equals(dash, dash2)) {
+            this.menuStroke.setSelectedIndex(1);
+        } else if (Arrays.equals(dash, dash3)) {
+            this.menuStroke.setSelectedIndex(2);
+        } else if (Arrays.equals(dash, dash4)) {
+            this.menuStroke.setSelectedIndex(3);
+        }
+    }
+
+
+    private void menuStrokeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuStrokeActionPerformed
+        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        if (vi != null) {
+
+            String tipo = this.menuStroke.getSelectedItem().toString();
+
+            switch (tipo) {
+                case "stk1":
+                    vi.getLienzo().setStrokeDash(dashes[0]);
+                    break;
+                case "stk2":
+                    vi.getLienzo().setStrokeDash(dashes[1]);
+                    break;
+                case "stk3":
+                    vi.getLienzo().setStrokeDash(dashes[2]);
+                    break;
+                case "stk4":
+                    vi.getLienzo().setStrokeDash(dashes[3]);
+                    break;
+
+            }
+            repaint();
+        }
+    }//GEN-LAST:event_menuStrokeActionPerformed
 
     /**
      * @param w
@@ -1322,6 +1385,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu menuDibujo;
     private javax.swing.JMenu menuEditar;
     private javax.swing.JMenu menuImagen;
+    public javax.swing.JComboBox<String> menuStroke;
     private javax.swing.JMenuItem miAbrir;
     private javax.swing.JMenuItem miGuardar;
     private javax.swing.JMenuItem miNuevo;

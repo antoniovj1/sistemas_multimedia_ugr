@@ -109,7 +109,7 @@ public class Elipse2D extends java.awt.geom.Ellipse2D.Double
         g2d.draw(this);
     }
 
-     @Override
+    @Override
     public boolean isAlisado() {
         return attr.isAlisado();
     }
@@ -172,6 +172,16 @@ public class Elipse2D extends java.awt.geom.Ellipse2D.Double
     @Override
     public float getTransparenciaVlaue() {
         return attr.getTrnaspareciaValue();
+    }
+
+    @Override
+    public void setStrokeDash(float[] dash) {
+        attr.setStrokeDash(dash);
+    }
+
+    @Override
+    public void setStrokeWidth(float w) {
+        attr.setStrokeWidth(w);
     }
 
 }

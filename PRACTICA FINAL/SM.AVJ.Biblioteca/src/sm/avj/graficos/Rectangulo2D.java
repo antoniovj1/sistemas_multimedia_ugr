@@ -61,8 +61,10 @@ public class Rectangulo2D extends java.awt.geom.Rectangle2D.Double
     }
 
     /**
-     * Este metodo establece los dos puntos que forman un miShape.
-     *throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+     * Este metodo establece los dos puntos que forman un miShape. throw new
+     * UnsupportedOperationException("Not supported yet."); //To change body of
+     * generated methods, choose Tools | Templates.
+     *
      * @param p1
      * @param p2
      */
@@ -108,7 +110,8 @@ public class Rectangulo2D extends java.awt.geom.Rectangle2D.Double
 
         g2d.draw(this);
     }
-  @Override
+
+    @Override
     public boolean isAlisado() {
         return attr.isAlisado();
     }
@@ -173,4 +176,13 @@ public class Rectangulo2D extends java.awt.geom.Rectangle2D.Double
         return attr.getTrnaspareciaValue();
     }
 
+    @Override
+    public void setStrokeDash(float[] dash) {
+        attr.setStrokeDash(dash);
+    }
+
+    @Override
+    public void setStrokeWidth(float w) {
+        attr.setStrokeWidth(w);
+    }
 }

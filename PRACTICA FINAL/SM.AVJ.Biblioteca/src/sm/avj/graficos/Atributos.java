@@ -29,7 +29,7 @@ public class Atributos {
     boolean transparencia;
     boolean relleno;
 
-   public Atributos() {
+    public Atributos() {
         color = Color.BLACK;
         transp = 0.5f;
         stroke = new BasicStroke(1.0f);
@@ -41,7 +41,7 @@ public class Atributos {
         relleno = false;
     }
 
-     public void conf(Graphics2D g2d) {
+    public void conf(Graphics2D g2d) {
         g2d.setPaint(color);
         g2d.setStroke(stroke);
 
@@ -53,74 +53,78 @@ public class Atributos {
             g2d.setRenderingHints(antialiasing);
         }
 
-
     }
 
     public boolean isAlisado() {
         return alisado;
     }
 
-
     public void setAlisado(boolean alisado) {
         this.alisado = alisado;
     }
-
 
     public boolean isTransparencia() {
         return transparencia;
     }
 
- 
     public void setTransparencia(boolean transparencia) {
         this.transparencia = transparencia;
     }
 
     public void setTransparenciaValue(float val) {
-        if(val > 1.0f){
+        if (val > 1.0f) {
             val = 1.0f;
-        } else if ( val < 0.0f){
+        } else if (val < 0.0f) {
             val = 0.0f;
         }
-            
+
         comp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, val);
         transp = val;
         transparencia = true;
     }
-    
-    public float getTrnaspareciaValue(){
+
+    public float getTrnaspareciaValue() {
         return transp;
     }
-    
+
     public boolean isRelleno() {
         return relleno;
     }
 
-   
     public void setRelleno(boolean relleno) {
         this.relleno = relleno;
     }
 
-   
     public Color getColor() {
         return color;
     }
 
-    
     public void setColor(Color color) {
         this.color = color;
     }
 
-    
     public Stroke getStroke() {
         return stroke;
     }
 
-   
     public void setStroke(Stroke stroke) {
         this.stroke = stroke;
     }
 
-   
-   
-   
+    public void setStrokeDash(float[] dash) {
+        int cap = ((BasicStroke) stroke).getEndCap();
+        int join = ((BasicStroke) stroke).getLineJoin();
+        float width = ((BasicStroke) stroke).getLineWidth();
+
+        stroke = new BasicStroke(width, cap, join, 10.0f, dash, 0.0f);
+    }
+
+    public void setStrokeWidth(float w) {
+        int cap = ((BasicStroke) stroke).getEndCap();
+        int join = ((BasicStroke) stroke).getLineJoin();
+        float dash[] = ((BasicStroke) stroke).getDashArray();
+        
+        stroke = new BasicStroke(w, cap, join, 10.0f, dash, 0.0f);
+    }
+
 }
