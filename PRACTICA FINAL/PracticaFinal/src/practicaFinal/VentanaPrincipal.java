@@ -29,6 +29,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import sm.avj.imagen.SepiaOp;
+import sm.avj.ui.SelectorColoresDialog;
 import sm.avj.ui.resizeDialog;
 import sm.image.BlendOp;
 import sm.image.KernelProducer;
@@ -55,7 +56,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      */
     public VentanaPrincipal() {
         initComponents();
-        
+
     }
 
     /**
@@ -612,6 +613,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         menuDibujo.add(cambiarTamanioLienzo);
 
         selecionColores.setText("Colores");
+        selecionColores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selecionColoresActionPerformed(evt);
+            }
+        });
         menuDibujo.add(selecionColores);
 
         barraMenu.add(menuDibujo);
@@ -703,7 +709,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         if (vi != null) {
             vi.getLienzo().setTransparencia(this.botonTransparencia.isSelected());
             this.sliderTransparencia.setVisible(this.botonTransparencia.isSelected());
-            this.sliderTransparencia.setValue((int) (vi.getLienzo().getTransparenciaValue()*100));
+            this.sliderTransparencia.setValue((int) (vi.getLienzo().getTransparenciaValue() * 100));
         }
         this.repaint();
     }//GEN-LAST:event_botonTransparenciaActionPerformed
@@ -715,7 +721,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
         this.repaint();
     }//GEN-LAST:event_botonAlisarActionPerformed
-    
+
 
     private void botonNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoActionPerformed
         VentanaInterna vi = new VentanaInterna(this);
@@ -726,19 +732,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void botonAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAbrirActionPerformed
         JFileChooser dlg = new JFileChooser();
-        
+
         String extensiones[];
         extensiones = ImageIO.getReaderFormatNames();
-        
+
         Set<String> extSinRep = new LinkedHashSet<>();
         for (String extension : extensiones) {
             extSinRep.add(extension.toLowerCase());
         }
-        
+
         for (String extension : extSinRep) {
             dlg.addChoosableFileFilter(new FileNameExtensionFilter(extension, extension));
         }
-        
+
         int resp = dlg.showOpenDialog(this);
         if (resp == JFileChooser.APPROVE_OPTION) {
             File f = dlg.getSelectedFile();
@@ -765,35 +771,35 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         VentanaInterna vi = (VentanaInterna) escritorio.getSelectedFrame();
         if (vi != null) {
             JFileChooser dlg = new JFileChooser();
-            
+
             String extensiones[];
             extensiones = ImageIO.getWriterFileSuffixes();
-            
+
             Set<String> extSinRep = new LinkedHashSet<>();
             for (String extension : extensiones) {
                 extSinRep.add(extension.toLowerCase());
             }
-            
+
             for (String extension : extSinRep) {
                 dlg.addChoosableFileFilter(new FileNameExtensionFilter(extension, extension));
             }
-            
+
             int resp = dlg.showSaveDialog(this);
             if (resp == JFileChooser.APPROVE_OPTION) {
-                
+
                 try {
                     BufferedImage img = vi.getLienzo().getImage(true);
                     if (img != null) {
                         File f = dlg.getSelectedFile();
                         String ext = dlg.getFileFilter().getDescription();
-                        
+
                         ImageIO.write(img, ext, f);
                         vi.setTitle(f.getName());
                     }
                 } catch (Exception ex) {
                     System.err.println("Error al guardar la imagen");
                 }
-                
+
             }
         }
     }//GEN-LAST:event_botonGuardarActionPerformed
@@ -801,14 +807,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void menuColoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuColoresActionPerformed
         Color c = (Color) this.menuColores.getSelectedItem();
         this.menuColores.setBackground(c);
-        
+
         VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
         if (vi != null) {
             vi.getLienzo().setColor(this.menuColores.getBackground());
             repaint();
         }
     }//GEN-LAST:event_menuColoresActionPerformed
-    
+
 
     private void cambiarTamanioImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cambiarTamanioImagenActionPerformed
         VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
@@ -816,20 +822,20 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             resizeDialog rd = new resizeDialog(this, true);
             rd.setAncho(vi.getLienzo().getImage().getWidth());
             rd.setAltura(vi.getLienzo().getImage().getHeight());
-            
+
             rd.setVisible(true);
-            
+
             if (rd.getEditado()) {
                 int altura = rd.getAltura();
                 int ancho = rd.getAncho();
-                
+
                 BufferedImage image = vi.getLienzo().getImage();
                 BufferedImage imgEscalada = new BufferedImage(altura, ancho, image.getType());
-                
+
                 Graphics2D g2d = imgEscalada.createGraphics();
                 g2d.drawImage(image, 0, 0, altura, ancho, null);
                 g2d.dispose();
-                
+
                 vi.getLienzo().setImage(imgEscalada);
                 repaint();
                 rd.setEditado(false);
@@ -877,7 +883,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             BufferedImage imgOut = rop.filter(imagenAux, null);
             vi.getLienzo().setImage(imgOut);
             repaint();
-            
+
         }
     }//GEN-LAST:event_sliderBrilloStateChanged
 
@@ -887,9 +893,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             int index = this.comboBoxFiltros.getSelectedIndex();
             Kernel k = KernelProducer.createKernel(index);
             ConvolveOp cop = new ConvolveOp(k, ConvolveOp.EDGE_NO_OP, null);
-            
+
             vi.getLienzo().setImage(cop.filter(vi.getLienzo().getImage(), null));
-            
+
             repaint();
         }
     }//GEN-LAST:event_comboBoxFiltrosActionPerformed
@@ -914,7 +920,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     // Imagen origen y destino iguales
                     crearLookupOp(LookupTableProducer.TYPE_SFUNCION).filter(imgSource, imgSource);
                     vi.repaint();
-                    
+
                 } catch (Exception e) {
                     System.err.println(e.getLocalizedMessage());
                 }
@@ -981,28 +987,28 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         double sin = Math.abs(Math.sin(r));
         double width = imagen.getWidth();
         double height = imagen.getHeight();
-        
+
         Point p = new Point((int) (width * cos + height * sin), (int) (width * sin + height * cos));
         Point p2 = new Point();
-        
+
         BufferedImage out = new BufferedImage(p.x, p.y, imagen.getType());
         Graphics2D g2 = out.createGraphics();
         g2.setPaint(Color.WHITE);
         g2.fillRect(0, 0, p.x, p.y);
-        
+
         p2.setLocation(p);
         p.setLocation(p.x / 2, p.y / 2);
-        
+
         AffineTransform at = AffineTransform.getRotateInstance(r, p.x, p.y);
         p.setLocation((p2.x - width) / 2, (p2.y - height) / 2);
         at.translate(p.x, p.y);
-        
+
         AffineTransformOp atop;
         atop = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
-        
+
         return atop.filter(imagen, null);
     }
-    
+
 
     private void boton180ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton180ActionPerformed
         VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
@@ -1018,7 +1024,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         if (vi != null) {
             BufferedImage imgSource = vi.getLienzo().getImage();
             vi.getLienzo().setImage(rotarImagen(imgSource, 90));
-            
+
             repaint();
         }
     }//GEN-LAST:event_boton90ActionPerformed
@@ -1028,7 +1034,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         if (vi != null) {
             BufferedImage imgSource = vi.getLienzo().getImage();
             vi.getLienzo().setImage(rotarImagen(imgSource, 270));
-            
+
             repaint();
         }
     }//GEN-LAST:event_boton270ActionPerformed
@@ -1049,7 +1055,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         repaint();
         // }
     }//GEN-LAST:event_sliderRotacionFocusLost
-    
+
 
     private void sliderRotacionStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderRotacionStateChanged
         VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
@@ -1211,31 +1217,48 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_sliderTransparenciaStateChanged
 
     private void cambiarTamanioLienzoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cambiarTamanioLienzoActionPerformed
-                VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
         if (vi != null) {
             resizeDialog rd = new resizeDialog(this, true);
             rd.setAncho(vi.getLienzo().getImage().getWidth());
             rd.setAltura(vi.getLienzo().getImage().getHeight());
-            
+
             rd.setVisible(true);
-            
+
             if (rd.getEditado()) {
                 int altura = rd.getAltura();
                 int ancho = rd.getAncho();
-                
+
                 BufferedImage image = vi.getLienzo().getImage();
                 BufferedImage imgEscalada = new BufferedImage(altura, ancho, image.getType());
-                
+
                 Graphics2D g2d = imgEscalada.createGraphics();
                 g2d.drawImage(image, 0, 0, altura, ancho, null);
                 g2d.dispose();
-                
+
                 vi.getLienzo().setImage(imgEscalada);
                 repaint();
                 rd.setEditado(false);
             }
         }
     }//GEN-LAST:event_cambiarTamanioLienzoActionPerformed
+
+    private void selecionColoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selecionColoresActionPerformed
+        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        if (vi != null) {
+            SelectorColoresDialog sc = new SelectorColoresDialog(this, true);
+            
+            sc.setColor(vi.getLienzo().getColor());
+            sc.setVisible(true);
+
+            if (sc.isSeleccionado()) {
+                vi.getLienzo().setColor(sc.getColor());
+                this.menuColores.setBackground(sc.getColor());
+            }
+            
+            repaint();
+        }
+    }//GEN-LAST:event_selecionColoresActionPerformed
 
     /**
      * @param w
@@ -1246,7 +1269,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         w = Math.toRadians(w);
         double K = 255.0 / Math.sin(Math.toRadians(90.0));
         byte[] lt = new byte[256];
-        
+
         for (int l = 0; l <= 255; ++l) {
             lt[l] = (byte) (K * Math.abs(Math.sin(Math.toRadians((double) l * w))));
         }
