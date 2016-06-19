@@ -15,4 +15,12 @@ nb-configuration.xml
 *.jar
 *.war
 *.ear
-/PRACTICA FINAL/PracticaFinal/nbproject/private/
+
+!sm.sound.v2.jar
+!sm.image.jar
+!jmf.jar
+!customizer.jar
+!mediaplayer.jar
+!multiplayer.jar
+!sound.jar
+
