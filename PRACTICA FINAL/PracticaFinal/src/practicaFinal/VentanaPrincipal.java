@@ -28,6 +28,7 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import sm.avj.imagen.SepiaOp;
 import sm.avj.ui.SelectorColoresDialog;
@@ -51,7 +52,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     BufferedImage imagenBendAux1 = null;
     BufferedImage imagenBendAux2 = null;
     //float alfa_bend = 0.5f;
-    VentanaInterna bending = null;
+    // VentanaInterna bending = null;
+    VentanaBlending vb = null;
 
     final float dash1[] = {10.0f};
     final float dash2[] = {20.0f, 9.0f, 3.0f, 9.0f};
@@ -545,9 +547,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         sliderBend.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 sliderBendFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                sliderBendFocusLost(evt);
             }
         });
         panelBinaryOp.add(sliderBend);
@@ -1185,45 +1184,42 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void sliderBendStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderBendStateChanged
         //VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
-        if (bending != null) {
+        if (vb != null) {
             float alfa = (float) this.sliderBend.getValue() / 100.0f;
-            BlendOp op = new BlendOp(imagenBendAux1, alfa);
-            BufferedImage imgdest = op.filter(imagenBendAux2, null);
-            bending.getLienzo().setImage(imgdest);
-            bending.repaint();
+            vb.mezclar(alfa);
+            vb.setTitle("Mezclando...");
+            repaint();
         }
 
     }//GEN-LAST:event_sliderBendStateChanged
 
     private void sliderBendFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_sliderBendFocusGained
         VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
-        if (vi != null) {
-            VentanaInterna viNext = (VentanaInterna) escritorio.selectFrame(false);
-            if (viNext != null) {
-                imagenBendAux1 = vi.getLienzo().getImage();
-                imagenBendAux2 = viNext.getLienzo().getImage();
-                if (imagenBendAux1 != null && imagenBendAux2 != null) {
-                    try {
-                        BlendOp op = new BlendOp(imagenBendAux1);
-                        BufferedImage imgdest = op.filter(imagenBendAux2, null);
-                        bending = new VentanaInterna(this);
-                        bending.getLienzo().setImage(imgdest);
-                        this.escritorio.add(bending);
-                        bending.setVisible(true);
-                    } catch (IllegalArgumentException e) {
-                        System.err.println("Error: " + e.getLocalizedMessage());
+
+        //Para evitar que se cree una nuva ventana si aun no se ha terminado de mezclar.
+        if (vb == null || vb.isMezcladoFinalizado()) {
+            if (vi != null) {
+                VentanaInterna viNext = (VentanaInterna) escritorio.selectFrame(false);
+                if (viNext != null) {
+                    imagenBendAux1 = vi.getLienzo().getImage();
+                    imagenBendAux2 = viNext.getLienzo().getImage();
+                    if (imagenBendAux1 != null && imagenBendAux2 != null) {
+                        try {
+                            vb = new VentanaBlending(this);
+                            vb.setImages(imagenBendAux1, imagenBendAux2);
+                            vb.mezclar(0.5f);
+                            vb.setName("ventanaMezcla");
+
+                            this.escritorio.add(vb);
+                            vb.setVisible(true);
+                        } catch (IllegalArgumentException e) {
+                            System.err.println("Error: " + e.getLocalizedMessage());
+                        }
                     }
                 }
             }
         }
     }//GEN-LAST:event_sliderBendFocusGained
-
-    private void sliderBendFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_sliderBendFocusLost
-        imagenBendAux1 = null;
-        imagenBendAux2 = null;
-        //alfa_bend = 0.5f;
-        bending = null;
-    }//GEN-LAST:event_sliderBendFocusLost
 
     private void botonPoligonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPoligonoActionPerformed
         VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
@@ -1421,7 +1417,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel panelRotacion;
     private javax.swing.JPanel panelSinusoidal;
     private javax.swing.JMenuItem selecionColores;
-    private javax.swing.JSlider sliderBend;
+    public javax.swing.JSlider sliderBend;
     private javax.swing.JSlider sliderBrillo;
     private javax.swing.JSlider sliderRotacion;
     public javax.swing.JSlider sliderTransparencia;
