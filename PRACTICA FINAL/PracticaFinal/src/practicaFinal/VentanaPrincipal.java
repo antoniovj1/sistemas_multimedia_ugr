@@ -29,6 +29,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioSystem;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -152,6 +154,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         miNuevo = new javax.swing.JMenuItem();
         miAbrir = new javax.swing.JMenuItem();
         miGuardar = new javax.swing.JMenuItem();
+        miGrabar = new javax.swing.JMenuItem();
         menuEditar = new javax.swing.JMenu();
         miVerBarraEstado = new javax.swing.JCheckBoxMenuItem();
         miVerToolsBar = new javax.swing.JCheckBoxMenuItem();
@@ -653,6 +656,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         menuArchivo.add(miGuardar);
 
+        miGrabar.setText("Grabar");
+        miGrabar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miGrabarActionPerformed(evt);
+            }
+        });
+        menuArchivo.add(miGrabar);
+
         barraMenu.add(menuArchivo);
 
         menuEditar.setText("Editar");
@@ -821,6 +832,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void botonNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoActionPerformed
         VentanaInterna vi = new VentanaInterna(this);
         escritorio.add(vi);
+
+        VentanaInterna va = (VentanaInterna) escritorio.getSelectedFrame();
+        if (va != null) {
+            vi.setLocation(va.getX() + 15, va.getY() + 15);
+        }
+
         vi.setVisible(true);
 
     }//GEN-LAST:event_botonNuevoActionPerformed
@@ -853,6 +870,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             vi.getLienzo().setImage(img);
             this.escritorio.add(vi);
             vi.setTitle(f.getName());
+
+            VentanaInterna va = (VentanaInterna) escritorio.getSelectedFrame();
+            if (va != null) {
+                vi.setLocation(va.getX() + 15, va.getY() + 15);
+            }
+
             vi.setVisible(true);
         }
     }//GEN-LAST:event_botonAbrirActionPerformed
@@ -959,6 +982,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void sliderBrilloStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderBrilloStateChanged
         VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
         if (vi != null && imagenAux != null && this.sliderBrillo.hasFocus()) {
+
             RescaleOp rop;
             if (this.imagenAux.getColorModel().hasAlpha()) {
                 float[] scales = new float[]{1.0f, 1.0f, 1.0f, 1.0f};
@@ -971,9 +995,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             /**
              * @TODO ¿Más eficiente creando la variable fuera?
              */
-            BufferedImage imgOut = rop.filter(imagenAux, null);
-            vi.getLienzo().setImage(imgOut);
-            repaint();
+            try {
+                BufferedImage imgOut = rop.filter(imagenAux, null);
+                vi.getLienzo().setImage(imgOut);
+                repaint();
+            } catch (Exception e) {
+                System.err.println(e.getLocalizedMessage());
+            }
 
         }
     }//GEN-LAST:event_sliderBrilloStateChanged
@@ -1480,6 +1508,41 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         repaint();
     }//GEN-LAST:event_sliderUmbralFocusLost
 
+    private void miGrabarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miGrabarActionPerformed
+        JFileChooser dlg = new JFileChooser();
+
+        AudioFileFormat.Type tipos[] = AudioSystem.getAudioFileTypes();
+
+        Set<String> extSinRep = new LinkedHashSet<>();
+        for (AudioFileFormat.Type tipo : tipos) {
+            extSinRep.add(tipo.toString().toLowerCase());
+        }
+
+        for (String extension : extSinRep) {
+            dlg.addChoosableFileFilter(new FileNameExtensionFilter(extension, extension));
+        }
+
+        int resp = dlg.showOpenDialog(this);
+        if (resp == JFileChooser.APPROVE_OPTION) {
+            File f = dlg.getSelectedFile();
+             
+            try {
+                VentanaInternaGrabador vi = new VentanaInternaGrabador(f);
+                this.escritorio.add(vi);
+                vi.setTitle(f.getName());
+
+                VentanaInterna va = (VentanaInterna) escritorio.getSelectedFrame();
+                if (va != null) {
+                    vi.setLocation(va.getX() + 15, va.getY() + 15);
+                }
+
+                vi.setVisible(true);
+            } catch (Exception e) {
+                System.err.println(e.getLocalizedMessage());
+            }
+        }
+    }//GEN-LAST:event_miGrabarActionPerformed
+
     /**
      * @param w
      * @return
@@ -1573,6 +1636,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu menuImagen;
     public javax.swing.JComboBox<String> menuStroke;
     private javax.swing.JMenuItem miAbrir;
+    private javax.swing.JMenuItem miGrabar;
     private javax.swing.JMenuItem miGuardar;
     private javax.swing.JMenuItem miNuevo;
     private javax.swing.JCheckBoxMenuItem miVerBarraEstado;
