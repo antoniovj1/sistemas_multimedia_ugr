@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  *
@@ -58,6 +59,21 @@ public class Rectangulo2D extends java.awt.geom.Rectangle2D.Double
         this.setFrameFromDiagonal(p1, p2);
         this.p1 = p1;
         this.p2 = p2;
+    }
+
+    public Rectangulo2D(Rectangle2D rec) {
+        super();
+        this.p1 = new Point2D.Double(rec.getMaxX(), rec.getMaxY());
+        this.p2 = new Point2D.Double(rec.getMinX(), rec.getMinY());
+
+        this.setFrameFromDiagonal(p1, p2);
+    }
+
+    public void setRectangulo(Rectangle2D rec) {
+        this.p1 = new Point2D.Double(rec.getMaxX(), rec.getMaxY());
+        this.p2 = new Point2D.Double(rec.getMinX(), rec.getMinY());
+
+        this.setFrameFromDiagonal(p1, p2);
     }
 
     /**

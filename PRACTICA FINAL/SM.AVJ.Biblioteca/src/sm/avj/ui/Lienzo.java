@@ -14,6 +14,7 @@ import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import sm.avj.graficos.CurvaQ2D;
 import sm.avj.graficos.Forma;
+import sm.avj.graficos.Rectangulo2D;
 import sm.avj.graficos.miShape;
 
 /**
@@ -30,9 +32,13 @@ import sm.avj.graficos.miShape;
  */
 public class Lienzo extends javax.swing.JPanel {
 
+    final float DASH_EDITAR[] = {3.0f, 3.0f};
+    final float WIDTH_EDITAR = 2.0f;
+
     private Forma forma;
     private miShape sh;
     miShape clip;
+    Rectangulo2D boundigBox;
     private final List<miShape> vShape;
     private Point2D puntoClick, puntoActual;
     private boolean editar;
@@ -43,10 +49,14 @@ public class Lienzo extends javax.swing.JPanel {
         this.poligono_empezado = false;
         this.curvaq_empezada = false;
         this.curvaq_ptc = false;
-
         this.vShape = new ArrayList<>();
-
         this.forma = Forma.PUNTO;
+
+        boundigBox = new Rectangulo2D();
+        boundigBox.setColor(Color.GRAY);
+        boundigBox.setTransparencia(true);
+        boundigBox.setStrokeWidth(WIDTH_EDITAR);
+        boundigBox.setStrokeDash(DASH_EDITAR);
 
         initComponents();
     }
@@ -70,6 +80,10 @@ public class Lienzo extends javax.swing.JPanel {
             g2d.setComposite(comp);
             g2d.setRenderingHints(antialiasing);
         }
+        if (boundigBox != null && editar) {
+            boundigBox.paint(g2d);
+        }
+
     }
 
     private miShape createShape(Point2D p1) throws ClassNotFoundException, NoSuchMethodException,
@@ -144,12 +158,24 @@ public class Lienzo extends javax.swing.JPanel {
         puntoClick = evt.getPoint();
         puntoActual = puntoClick;
 
+        //Aseguro que si no estoy pintando una curva o un poligono sus variables no interfieren.
+        if (forma != Forma.POLIGONO) {
+            poligono_empezado = false;
+        }
+        if (forma != Forma.CURVAQ) {
+            curvaq_empezada = curvaq_ptc = false;
+        }
+
         if (poligono_empezado == false && curvaq_empezada == false) {
             sh = null;
         }
 
         if (editar) {
             sh = this.getSelectedSape(puntoClick);
+
+            if (sh != null) {
+                boundigBox.setRectangulo(sh.getBounds2D());
+            }
 
         } else if (poligono_empezado == false && curvaq_empezada == false) {
             try {
@@ -166,6 +192,7 @@ public class Lienzo extends javax.swing.JPanel {
             }
         }
         repaint();
+
     }//GEN-LAST:event_formMousePressed
 
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
@@ -178,6 +205,10 @@ public class Lienzo extends javax.swing.JPanel {
                 Point2D p = new Point2D.Double(puntoActual.getX() - puntoClick.getX(), puntoActual.getY() - puntoClick.getY());
 
                 sh.setLocation(p);
+
+                if (sh != null) {
+                    boundigBox.setRectangulo(sh.getBounds2D());
+                }
 
                 puntoClick = puntoActual;
 
@@ -270,9 +301,9 @@ public class Lienzo extends javax.swing.JPanel {
             sh.setStrokeDash(dash);
         }
     }
-    
+
     public void setStrokeWidth(float w) {
-        if(sh != null){
+        if (sh != null) {
             sh.setStrokeWidth(w);
         }
     }
