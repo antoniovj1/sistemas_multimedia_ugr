@@ -111,6 +111,10 @@ public class VentanaInterna extends javax.swing.JInternalFrame {
             this.ventanaPadre.menuColores.setBackground(lienzo.getColor());
         }
 
+        
+        /**
+         * ¿ Siempre activados o solo activarlos al seleccionar una figura ?
+        
         boolean actv = (lienzo.isFigSelected() && lienzo.isEditar()) == true;
 
         this.ventanaPadre.botonRelleno.setEnabled(actv);
@@ -119,7 +123,7 @@ public class VentanaInterna extends javax.swing.JInternalFrame {
         this.ventanaPadre.spinnerGrosor.setEnabled(actv);
         this.ventanaPadre.menuColores.setEnabled(actv);
         this.ventanaPadre.sliderTransparencia.setVisible(actv);
-        this.ventanaPadre.menuStroke.setEnabled(actv);
+        this.ventanaPadre.menuStroke.setEnabled(actv);*/
 
         switch (lienzo.getForma()) {
             case PUNTO:
@@ -162,7 +166,6 @@ public class VentanaInterna extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_formInternalFrameActivated
 
     private void lienzoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lienzoMousePressed
-        // TODO add your handling code here:
         this.updateParent();
     }//GEN-LAST:event_lienzoMousePressed
 

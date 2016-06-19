@@ -8,10 +8,14 @@ package practicaFinal;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.color.ColorSpace;
+import java.awt.color.ICC_ColorSpace;
+import java.awt.color.ICC_Profile;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.ByteLookupTable;
+import java.awt.image.ColorConvertOp;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.awt.image.LookupOp;
@@ -28,9 +32,9 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import sm.avj.imagen.SepiaOp;
+import sm.avj.imagen.UmbralizacionOp;
 import sm.avj.ui.SelectorColoresDialog;
 import sm.avj.ui.StrokeCellRenderer;
 import sm.avj.ui.resizeDialog;
@@ -45,10 +49,8 @@ import sm.image.SubtractionOp;
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
 
-    /**
-     * @TODO Arreglar todo lo relativo a la mezcla de imagenes
-     */
     BufferedImage imagenAux = null;
+    BufferedImage imagenUmbralizadaAux = null;
     BufferedImage imagenBendAux1 = null;
     BufferedImage imagenBendAux2 = null;
     //float alfa_bend = 0.5f;
@@ -114,8 +116,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         botonAlisar = new javax.swing.JToggleButton();
         panelInferior = new javax.swing.JPanel();
         barraEstado = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel1 = new javax.swing.JPanel();
+        ScrollPaneImg = new javax.swing.JScrollPane();
+        panelImagenes = new javax.swing.JPanel();
         panelBrillo = new javax.swing.JPanel();
         sliderBrillo = new javax.swing.JSlider();
         panelFiltros = new javax.swing.JPanel();
@@ -127,6 +129,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelSinusoidal = new javax.swing.JPanel();
         botonSeno = new javax.swing.JButton();
         botonSepia = new javax.swing.JButton();
+        botonOpPropia = new javax.swing.JButton();
+        botonNegativo = new javax.swing.JButton();
+        botonEscGrises = new javax.swing.JButton();
         panelRotacion = new javax.swing.JPanel();
         sliderRotacion = new javax.swing.JSlider();
         boton90 = new javax.swing.JButton();
@@ -139,6 +144,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         botonSuma = new javax.swing.JButton();
         botonResta = new javax.swing.JButton();
         sliderBend = new javax.swing.JSlider();
+        panelUmbralizacion = new javax.swing.JPanel();
+        sliderUmbral = new javax.swing.JSlider();
         escritorio = new javax.swing.JDesktopPane();
         barraMenu = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
@@ -161,6 +168,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         barraHerramientas.setRollover(true);
 
         botonNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/nuevo.png"))); // NOI18N
+        botonNuevo.setToolTipText("Nuevo");
         botonNuevo.setFocusable(false);
         botonNuevo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botonNuevo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -172,6 +180,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         barraHerramientas.add(botonNuevo);
 
         botonAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/abrir.png"))); // NOI18N
+        botonAbrir.setToolTipText("Abrir");
         botonAbrir.setFocusable(false);
         botonAbrir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botonAbrir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -183,6 +192,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         barraHerramientas.add(botonAbrir);
 
         botonGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
+        botonGuardar.setToolTipText("Guardar");
         botonGuardar.setFocusable(false);
         botonGuardar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botonGuardar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -248,7 +258,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         barraHerramientas.add(botonElipse);
 
         grupoBotonesFormas.add(botonPoligono);
-        botonPoligono.setText("POL");
+        botonPoligono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/poligono.png"))); // NOI18N
+        botonPoligono.setToolTipText("Polígono");
         botonPoligono.setFocusable(false);
         botonPoligono.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botonPoligono.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -260,7 +271,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         barraHerramientas.add(botonPoligono);
 
         grupoBotonesFormas.add(botonCurvaQ);
-        botonCurvaQ.setText("CUQ");
+        botonCurvaQ.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/curvaq.png"))); // NOI18N
+        botonCurvaQ.setToolTipText("Curva con un punto de control");
         botonCurvaQ.setFocusable(false);
         botonCurvaQ.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botonCurvaQ.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -306,6 +318,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         menuStroke.setRenderer(new StrokeCellRenderer());
         menuStroke.setSelectedIndex(3);
         menuStroke.setMaximumRowCount(4);
+        menuStroke.setToolTipText("Tipo de línea");
         menuStroke.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuStrokeActionPerformed(evt);
@@ -314,6 +327,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         barraHerramientas.add(menuStroke);
 
         botonRelleno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/rellenar.png"))); // NOI18N
+        botonRelleno.setToolTipText("Relleno");
         botonRelleno.setFocusable(false);
         botonRelleno.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botonRelleno.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -325,6 +339,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         barraHerramientas.add(botonRelleno);
 
         botonTransparencia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/transparencia.png"))); // NOI18N
+        botonTransparencia.setToolTipText("Transparencia");
         botonTransparencia.setFocusable(false);
         botonTransparencia.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botonTransparencia.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -335,6 +350,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         barraHerramientas.add(botonTransparencia);
 
+        sliderTransparencia.setToolTipText("Nivel de transparencia");
         sliderTransparencia.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 sliderTransparenciaStateChanged(evt);
@@ -343,6 +359,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         barraHerramientas.add(sliderTransparencia);
 
         botonAlisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/alisar.png"))); // NOI18N
+        botonAlisar.setToolTipText("Alisado");
         botonAlisar.setFocusable(false);
         botonAlisar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botonAlisar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -361,10 +378,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         barraEstado.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelInferior.add(barraEstado, java.awt.BorderLayout.PAGE_END);
 
-        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        ScrollPaneImg.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 10, 1));
-        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        panelImagenes.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 10, 1));
+        panelImagenes.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         panelBrillo.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Brillo"));
 
@@ -386,7 +403,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         panelBrillo.add(sliderBrillo);
 
-        jPanel1.add(panelBrillo);
+        panelImagenes.add(panelBrillo);
 
         panelFiltros.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Filtro"));
 
@@ -398,7 +415,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         panelFiltros.add(comboBoxFiltros);
 
-        jPanel1.add(panelFiltros);
+        panelImagenes.add(panelFiltros);
 
         panelContraste.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Contraste"));
 
@@ -426,11 +443,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         panelContraste.add(botonOscurecer);
 
-        jPanel1.add(panelContraste);
+        panelImagenes.add(panelContraste);
 
         panelSinusoidal.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED), "          "));
         panelSinusoidal.setMinimumSize(new java.awt.Dimension(66, 60));
-        panelSinusoidal.setPreferredSize(new java.awt.Dimension(120, 60));
+        panelSinusoidal.setPreferredSize(new java.awt.Dimension(290, 60));
         panelSinusoidal.setLayout(new javax.swing.BoxLayout(panelSinusoidal, javax.swing.BoxLayout.LINE_AXIS));
 
         botonSeno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/sinusoidal.png"))); // NOI18N
@@ -449,7 +466,31 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         panelSinusoidal.add(botonSepia);
 
-        jPanel1.add(panelSinusoidal);
+        botonOpPropia.setText("PRO");
+        botonOpPropia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonOpPropiaActionPerformed(evt);
+            }
+        });
+        panelSinusoidal.add(botonOpPropia);
+
+        botonNegativo.setText("NEG");
+        botonNegativo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonNegativoActionPerformed(evt);
+            }
+        });
+        panelSinusoidal.add(botonNegativo);
+
+        botonEscGrises.setText("B/N");
+        botonEscGrises.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEscGrisesActionPerformed(evt);
+            }
+        });
+        panelSinusoidal.add(botonEscGrises);
+
+        panelImagenes.add(panelSinusoidal);
 
         panelRotacion.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Rotación"));
         panelRotacion.setPreferredSize(new java.awt.Dimension(377, 60));
@@ -497,7 +538,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         panelRotacion.add(boton270);
 
-        jPanel1.add(panelRotacion);
+        panelImagenes.add(panelRotacion);
 
         panelEscala.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Escala"));
 
@@ -517,7 +558,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         panelEscala.add(botonReducir);
 
-        jPanel1.add(panelEscala);
+        panelImagenes.add(panelEscala);
 
         panelBinaryOp.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Binarias"));
 
@@ -551,11 +592,32 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         panelBinaryOp.add(sliderBend);
 
-        jPanel1.add(panelBinaryOp);
+        panelImagenes.add(panelBinaryOp);
 
-        jScrollPane1.setViewportView(jPanel1);
+        panelUmbralizacion.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Umbralización"));
 
-        panelInferior.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        sliderUmbral.setMaximum(255);
+        sliderUmbral.setValue(127);
+        sliderUmbral.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderUmbralStateChanged(evt);
+            }
+        });
+        sliderUmbral.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                sliderUmbralFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                sliderUmbralFocusLost(evt);
+            }
+        });
+        panelUmbralizacion.add(sliderUmbral);
+
+        panelImagenes.add(panelUmbralizacion);
+
+        ScrollPaneImg.setViewportView(panelImagenes);
+
+        panelInferior.add(ScrollPaneImg, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(panelInferior, java.awt.BorderLayout.PAGE_END);
 
@@ -889,13 +951,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_sliderBrilloFocusGained
 
     private void sliderBrilloFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_sliderBrilloFocusLost
-        // VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
-        // if (vi != null) {
-        //vi.getLienzo().setImage(imagenAux);
         this.imagenAux = null;
         this.sliderBrillo.setValue(0);
         repaint();
-        // }
     }//GEN-LAST:event_sliderBrilloFocusLost
 
     private void sliderBrilloStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderBrilloStateChanged
@@ -1196,7 +1254,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void sliderBendFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_sliderBendFocusGained
         VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
 
-        //Para evitar que se cree una nuva ventana si aun no se ha terminado de mezclar.
+        //Para evitar que se cree una nueva ventana si aun no se ha terminado de mezclar.
         if (vb == null || vb.isMezcladoFinalizado()) {
             if (vi != null) {
                 VentanaInterna viNext = (VentanaInterna) escritorio.selectFrame(false);
@@ -1332,12 +1390,95 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
         if (vi != null) {
             VentanaInterna vn = new VentanaInterna(this);
-            vn.getLienzo().setImage(vi.getLienzo().getImage(true));
+            vn.getLienzo().setImage(vi.getLienzo().getImage(false));
             this.escritorio.add(vn);
             vn.setTitle(vi.getTitle() + "(Copia)");
             vn.setVisible(true);
         }
     }//GEN-LAST:event_duplicarImagenActionPerformed
+
+    private void botonOpPropiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonOpPropiaActionPerformed
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage imgSource = vi.getLienzo().getImage();
+            if (imgSource != null) {
+                try {
+                    LookupTable lt = propia(90.0);
+                    LookupOp lop = new LookupOp(lt, null);
+                    lop.filter(imgSource, imgSource);
+                    vi.repaint();
+                } catch (Exception e) {
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_botonOpPropiaActionPerformed
+
+    private void botonNegativoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNegativoActionPerformed
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage imgSource = vi.getLienzo().getImage();
+            if (imgSource != null) {
+                try {
+                    // Imagen origen y destino iguales
+                    crearLookupOp(LookupTableProducer.TYPE_NEGATIVE).filter(imgSource, imgSource);
+                    vi.repaint();
+
+                } catch (Exception e) {
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_botonNegativoActionPerformed
+
+    private void botonEscGrisesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEscGrisesActionPerformed
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage imgSource = vi.getLienzo().getImage();
+            if (imgSource != null) {
+                try {
+                    ICC_Profile ip;
+                    ip = ICC_Profile.getInstance(ColorSpace.CS_GRAY);
+                    ColorSpace cs = new ICC_ColorSpace(ip);
+                    ColorConvertOp ccop = new ColorConvertOp(cs, null);
+                    // Imagen origen y destino iguales
+                    ccop.filter(imgSource, imgSource);
+                    vi.repaint();
+
+                } catch (Exception e) {
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_botonEscGrisesActionPerformed
+
+    private void sliderUmbralStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderUmbralStateChanged
+        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+
+        if (vi != null && imagenUmbralizadaAux != null && this.sliderUmbral.hasFocus()) {
+            try {
+                UmbralizacionOp uo = new UmbralizacionOp(this.sliderUmbral.getValue());
+                BufferedImage imgOut = uo.filter(imagenUmbralizadaAux, null);
+                vi.getLienzo().setImage(imgOut);
+                repaint();
+            } catch (Exception e) {
+                System.err.println(e.getLocalizedMessage());
+            }
+        }
+    }//GEN-LAST:event_sliderUmbralStateChanged
+
+    private void sliderUmbralFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_sliderUmbralFocusGained
+        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        if (vi != null) {
+            imagenUmbralizadaAux = vi.getLienzo().getImage();
+        }
+    }//GEN-LAST:event_sliderUmbralFocusGained
+
+    private void sliderUmbralFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_sliderUmbralFocusLost
+        this.imagenUmbralizadaAux = null;
+        this.sliderUmbral.setValue(127);
+        repaint();
+    }//GEN-LAST:event_sliderUmbralFocusLost
 
     /**
      * @param w
@@ -1356,8 +1497,35 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         return slt;
     }
 
+    public LookupTable propia(double w) {
+        w = Math.toRadians(w);
+        double K = 255.0 / 1.0f;
+        byte[] lt = new byte[256];
+
+        for (int l = 0; l <= 255; ++l) {
+            switch (l % 4) {
+                case 0:
+                    lt[l] = (byte) (K * Math.abs(Math.cos(Math.toRadians((double) l * w))));
+                    break;
+                case 1:
+                    lt[l] = (byte) (K * Math.abs(Math.sin(Math.toRadians((double) l * 0.1198))));
+                    break;
+                case 2:
+                    lt[l] = (byte) (K * Math.abs(Math.sin(Math.toRadians((double) l * 0.1198))));
+                    break;
+                case 3:
+                    lt[l] = (byte) (K * Math.abs(Math.cos(Math.toRadians((double) l * w))));
+                    break;
+            }
+
+        }
+        ByteLookupTable slt = new ByteLookupTable(0, lt);
+        return slt;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane ScrollPaneImg;
     protected javax.swing.JLabel barraEstado;
     private javax.swing.JToolBar barraHerramientas;
     private javax.swing.JMenuBar barraMenu;
@@ -1371,10 +1539,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public javax.swing.JToggleButton botonCurvaQ;
     protected javax.swing.JToggleButton botonEditar;
     protected javax.swing.JToggleButton botonElipse;
+    private javax.swing.JButton botonEscGrises;
     private javax.swing.JButton botonGuardar;
     private javax.swing.JButton botonIluminar;
     protected javax.swing.JToggleButton botonLinea;
+    private javax.swing.JButton botonNegativo;
     protected javax.swing.JButton botonNuevo;
+    private javax.swing.JButton botonOpPropia;
     private javax.swing.JButton botonOscurecer;
     protected javax.swing.JToggleButton botonPoligono;
     protected javax.swing.JToggleButton botonPunto;
@@ -1392,8 +1563,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem duplicarImagen;
     protected javax.swing.JDesktopPane escritorio;
     private javax.swing.ButtonGroup grupoBotonesFormas;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
@@ -1413,14 +1582,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel panelContraste;
     private javax.swing.JPanel panelEscala;
     private javax.swing.JPanel panelFiltros;
+    private javax.swing.JPanel panelImagenes;
     private javax.swing.JPanel panelInferior;
     private javax.swing.JPanel panelRotacion;
     private javax.swing.JPanel panelSinusoidal;
+    private javax.swing.JPanel panelUmbralizacion;
     private javax.swing.JMenuItem selecionColores;
     public javax.swing.JSlider sliderBend;
     private javax.swing.JSlider sliderBrillo;
     private javax.swing.JSlider sliderRotacion;
     public javax.swing.JSlider sliderTransparencia;
+    private javax.swing.JSlider sliderUmbral;
     protected javax.swing.JSpinner spinnerGrosor;
     // End of variables declaration//GEN-END:variables
 }
