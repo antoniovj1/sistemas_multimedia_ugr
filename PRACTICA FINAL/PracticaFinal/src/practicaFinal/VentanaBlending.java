@@ -15,7 +15,7 @@ import sm.image.BlendOp;
  *
  * @author antonio
  */
-public class VentanaBlending extends VentanaInterna {
+public class VentanaBlending extends VentanaInternaLienzo {
 
     private final VentanaPrincipal ventanaPadre = null;
     private BufferedImage imgIzq;

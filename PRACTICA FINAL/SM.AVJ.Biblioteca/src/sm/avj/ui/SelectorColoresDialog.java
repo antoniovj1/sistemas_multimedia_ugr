@@ -77,7 +77,7 @@ public class SelectorColoresDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_botonSeleccionarActionPerformed
 
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
-        seleccionado = true;
+        seleccionado = false;
         this.dispose();
     }//GEN-LAST:event_botonCancelarActionPerformed
 

@@ -15,11 +15,11 @@ import sm.avj.ui.Lienzo2DImagen;
  *
  * @author antoniovj1
  */
-public class VentanaInterna extends javax.swing.JInternalFrame {
+public class VentanaInternaLienzo extends javax.swing.JInternalFrame {
 
     private final VentanaPrincipal ventanaPadre;
 
-    public VentanaInterna(VentanaPrincipal ventanaPadre) {
+    public VentanaInternaLienzo(VentanaPrincipal ventanaPadre) {
         this.ventanaPadre = ventanaPadre;
         initComponents();
         /**
