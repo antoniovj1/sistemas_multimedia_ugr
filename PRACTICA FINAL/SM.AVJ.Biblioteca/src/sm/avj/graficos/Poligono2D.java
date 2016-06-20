@@ -17,7 +17,7 @@ import java.awt.geom.Point2D;
  * @author antonio
  */
 public final class Poligono2D extends Polygon
-        implements miShape {
+        implements MiShape {
 
     Atributos attr = new Atributos();
 

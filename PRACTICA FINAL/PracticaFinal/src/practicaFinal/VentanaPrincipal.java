@@ -42,7 +42,7 @@ import sm.avj.imagen.SepiaOp;
 import sm.avj.imagen.UmbralizacionOp;
 import sm.avj.ui.SelectorColoresDialog;
 import sm.avj.ui.StrokeCellRenderer;
-import sm.avj.ui.resizeDialog;
+import sm.avj.ui.ResizeDialog;
 import sm.image.BlendOp;
 import sm.image.KernelProducer;
 import sm.image.LookupTableProducer;
@@ -119,6 +119,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         botonTransparencia = new javax.swing.JToggleButton();
         sliderTransparencia = new javax.swing.JSlider();
         botonAlisar = new javax.swing.JToggleButton();
+        botonCaptura = new javax.swing.JButton();
         panelInferior = new javax.swing.JPanel();
         barraEstado = new javax.swing.JLabel();
         ScrollPaneImg = new javax.swing.JScrollPane();
@@ -375,6 +376,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         barraHerramientas.add(botonAlisar);
+
+        botonCaptura.setText("Captura");
+        botonCaptura.setFocusable(false);
+        botonCaptura.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonCaptura.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraHerramientas.add(botonCaptura);
 
         getContentPane().add(barraHerramientas, java.awt.BorderLayout.PAGE_START);
 
@@ -745,8 +752,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.botonAbrirActionPerformed(evt);
     }//GEN-LAST:event_miAbrirActionPerformed
 
+    private VentanaInterna testVentanaInterna() {
+        JInternalFrame ji = this.escritorio.getSelectedFrame();
+        if (ji != null && ji instanceof VentanaInterna) {
+            return (VentanaInterna) ji;
+        } else {
+            return null;
+        }
+    }
+
+
     private void botonPuntoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPuntoActionPerformed
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             vi.getLienzo().setForma(sm.avj.graficos.Forma.PUNTO);
             vi.getLienzo().setEditar(false);
@@ -755,7 +772,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonPuntoActionPerformed
 
     private void botonLineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLineaActionPerformed
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             vi.getLienzo().setForma(sm.avj.graficos.Forma.LINEA);
             vi.getLienzo().setEditar(false);
@@ -764,7 +781,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonLineaActionPerformed
 
     private void botonRectanguloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRectanguloActionPerformed
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             vi.getLienzo().setForma(sm.avj.graficos.Forma.RECTANGULO);
             vi.getLienzo().setEditar(false);
@@ -773,7 +790,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonRectanguloActionPerformed
 
     private void botonElipseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonElipseActionPerformed
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             vi.getLienzo().setForma(sm.avj.graficos.Forma.ELIPSE);
             vi.getLienzo().setEditar(false);
@@ -790,7 +807,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_miGuardarActionPerformed
 
     private void spinnerGrosorStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinnerGrosorStateChanged
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             vi.getLienzo().setStrokeWidth(Integer.parseInt(this.spinnerGrosor.getValue().toString()));
         }
@@ -798,7 +815,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_spinnerGrosorStateChanged
 
     private void botonRellenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRellenoActionPerformed
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             vi.getLienzo().setRelleno(this.botonRelleno.isSelected());
         }
@@ -806,7 +823,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonRellenoActionPerformed
 
     private void botonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEditarActionPerformed
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             vi.getLienzo().setEditar(true);
         }
@@ -814,7 +831,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonEditarActionPerformed
 
     private void botonTransparenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonTransparenciaActionPerformed
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             vi.getLienzo().setTransparencia(this.botonTransparencia.isSelected());
             this.sliderTransparencia.setVisible(this.botonTransparencia.isSelected());
@@ -824,7 +841,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonTransparenciaActionPerformed
 
     private void botonAlisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAlisarActionPerformed
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             vi.getLienzo().setAlisado(this.botonAlisar.isSelected());
         }
@@ -910,7 +927,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "No se pudo abrir el archivo", "Error", 0);
-                
+
             }
 
         }
@@ -919,7 +936,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void configInternalFrame(JInternalFrame ji, File f) {
         ji.setTitle(f.getName());
         this.escritorio.add(ji);
-        VentanaInterna va = (VentanaInterna) escritorio.getSelectedFrame();
+        JInternalFrame va = escritorio.getSelectedFrame();
 
         if (va != null) {
             ji.setLocation(va.getX() + 15, va.getY() + 15);
@@ -934,7 +951,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      */
 
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
-        VentanaInterna vi = (VentanaInterna) escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             JFileChooser dlg = new JFileChooser();
 
@@ -983,9 +1000,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
 
     private void cambiarTamanioImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cambiarTamanioImagenActionPerformed
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
-            resizeDialog rd = new resizeDialog(this, true);
+            ResizeDialog rd = new ResizeDialog(this, true);
             rd.setAncho(vi.getLienzo().getImage().getWidth());
             rd.setAltura(vi.getLienzo().getImage().getHeight());
 
@@ -1015,7 +1032,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_miVerToolsBarActionPerformed
 
     private void sliderBrilloFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_sliderBrilloFocusGained
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             imagenAux = vi.getLienzo().getImage();
         }
@@ -1028,7 +1045,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_sliderBrilloFocusLost
 
     private void sliderBrilloStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderBrilloStateChanged
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null && imagenAux != null && this.sliderBrillo.hasFocus()) {
 
             RescaleOp rop;
@@ -1055,7 +1072,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_sliderBrilloStateChanged
 
     private void comboBoxFiltrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxFiltrosActionPerformed
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null && vi.getLienzo().getImage() != null) {
             int index = this.comboBoxFiltros.getSelectedIndex();
             Kernel k = KernelProducer.createKernel(index);
@@ -1078,7 +1095,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     private void botonContrasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonContrasteActionPerformed
-        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             BufferedImage imgSource = vi.getLienzo().getImage();
             if (imgSource != null) {
@@ -1096,7 +1113,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonContrasteActionPerformed
 
     private void botonIluminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIluminarActionPerformed
-        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             BufferedImage imgSource = vi.getLienzo().getImage();
             if (imgSource != null) {
@@ -1111,7 +1128,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonIluminarActionPerformed
 
     private void botonOscurecerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonOscurecerActionPerformed
-        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             BufferedImage imgSource = vi.getLienzo().getImage();
             if (imgSource != null) {
@@ -1126,7 +1143,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonOscurecerActionPerformed
 
     private void botonSenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSenoActionPerformed
-        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             BufferedImage imgSource = vi.getLienzo().getImage();
             if (imgSource != null) {
@@ -1178,7 +1195,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
 
     private void boton180ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton180ActionPerformed
-        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             BufferedImage imgSource = vi.getLienzo().getImage();
             vi.getLienzo().setImage(rotarImagen(imgSource, 180));
@@ -1187,7 +1204,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_boton180ActionPerformed
 
     private void boton90ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton90ActionPerformed
-        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             BufferedImage imgSource = vi.getLienzo().getImage();
             vi.getLienzo().setImage(rotarImagen(imgSource, 90));
@@ -1197,7 +1214,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_boton90ActionPerformed
 
     private void boton270ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton270ActionPerformed
-        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             BufferedImage imgSource = vi.getLienzo().getImage();
             vi.getLienzo().setImage(rotarImagen(imgSource, 270));
@@ -1207,25 +1224,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_boton270ActionPerformed
 
     private void sliderRotacionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_sliderRotacionFocusGained
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             imagenAux = vi.getLienzo().getImage();
         }
     }//GEN-LAST:event_sliderRotacionFocusGained
 
     private void sliderRotacionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_sliderRotacionFocusLost
-        // VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
-        //  if (vi != null) {
-        // vi.getLienzo().setImage(imagenAux);
         this.imagenAux = null;
         this.sliderBrillo.setValue(0);
         repaint();
-        // }
     }//GEN-LAST:event_sliderRotacionFocusLost
 
 
     private void sliderRotacionStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderRotacionStateChanged
-        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null && imagenAux != null && this.sliderRotacion.hasFocus()) {
             vi.getLienzo().setImage(rotarImagen(imagenAux, this.sliderRotacion.getValue()));
             repaint();
@@ -1233,7 +1246,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_sliderRotacionStateChanged
 
     private void botonAumentarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAumentarActionPerformed
-        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             AffineTransform at = AffineTransform.getScaleInstance(1.25, 1.25);
             AffineTransformOp atop;
@@ -1244,7 +1257,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonAumentarActionPerformed
 
     private void botonReducirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonReducirActionPerformed
-        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             AffineTransform at = AffineTransform.getScaleInstance(0.75, 0.75);
             AffineTransformOp atop;
@@ -1255,7 +1268,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonReducirActionPerformed
 
     private void botonSepiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSepiaActionPerformed
-        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             BufferedImage imgSource = vi.getLienzo().getImage();
             if (imgSource != null) {
@@ -1271,7 +1284,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonSepiaActionPerformed
 
     private void botonSumaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSumaActionPerformed
-        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             VentanaInterna viNext = (VentanaInterna) escritorio.selectFrame(false);
             if (viNext != null) {
@@ -1294,7 +1307,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonSumaActionPerformed
 
     private void botonRestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRestaActionPerformed
-        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             VentanaInterna viNext = (VentanaInterna) escritorio.selectFrame(false);
             if (viNext != null) {
@@ -1317,7 +1330,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonRestaActionPerformed
 
     private void sliderBendStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderBendStateChanged
-        //VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
         if (vb != null) {
             float alfa = (float) this.sliderBend.getValue() / 100.0f;
             vb.mezclar(alfa);
@@ -1328,8 +1340,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_sliderBendStateChanged
 
     private void sliderBendFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_sliderBendFocusGained
-        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
-
+        VentanaInterna vi = testVentanaInterna();
         //Para evitar que se cree una nueva ventana si aun no se ha terminado de mezclar.
         if (vb == null || vb.isMezcladoFinalizado()) {
             if (vi != null) {
@@ -1356,7 +1367,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_sliderBendFocusGained
 
     private void botonPoligonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPoligonoActionPerformed
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             vi.getLienzo().setForma(sm.avj.graficos.Forma.POLIGONO);
             vi.getLienzo().setEditar(false);
@@ -1364,7 +1375,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonPoligonoActionPerformed
 
     private void botonCurvaQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCurvaQActionPerformed
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             vi.getLienzo().setForma(sm.avj.graficos.Forma.CURVAQ);
             vi.getLienzo().setEditar(false);
@@ -1372,7 +1383,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonCurvaQActionPerformed
 
     private void sliderTransparenciaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderTransparenciaStateChanged
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             double rot = this.sliderTransparencia.getValue();
             vi.getLienzo().setTrasnsparenciaValue((float) (rot / 100));
@@ -1381,9 +1392,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_sliderTransparenciaStateChanged
 
     private void cambiarTamanioLienzoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cambiarTamanioLienzoActionPerformed
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
-            resizeDialog rd = new resizeDialog(this, true);
+            ResizeDialog rd = new ResizeDialog(this, true);
             rd.setAncho(vi.getLienzo().getImage().getWidth());
             rd.setAltura(vi.getLienzo().getImage().getHeight());
 
@@ -1408,7 +1419,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_cambiarTamanioLienzoActionPerformed
 
     private void selecionColoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selecionColoresActionPerformed
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             SelectorColoresDialog sc = new SelectorColoresDialog(this, true);
 
@@ -1438,7 +1449,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
 
     private void menuStrokeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuStrokeActionPerformed
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
 
             String tipo = this.menuStroke.getSelectedItem().toString();
@@ -1463,7 +1474,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuStrokeActionPerformed
 
     private void duplicarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_duplicarImagenActionPerformed
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             VentanaInterna vn = new VentanaInterna(this);
             vn.getLienzo().setImage(vi.getLienzo().getImage(false));
@@ -1474,7 +1485,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_duplicarImagenActionPerformed
 
     private void botonOpPropiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonOpPropiaActionPerformed
-        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             BufferedImage imgSource = vi.getLienzo().getImage();
             if (imgSource != null) {
@@ -1491,7 +1502,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonOpPropiaActionPerformed
 
     private void botonNegativoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNegativoActionPerformed
-        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             BufferedImage imgSource = vi.getLienzo().getImage();
             if (imgSource != null) {
@@ -1508,7 +1519,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonNegativoActionPerformed
 
     private void botonEscGrisesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEscGrisesActionPerformed
-        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             BufferedImage imgSource = vi.getLienzo().getImage();
             if (imgSource != null) {
@@ -1529,8 +1540,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonEscGrisesActionPerformed
 
     private void sliderUmbralStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderUmbralStateChanged
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
-
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null && imagenUmbralizadaAux != null && this.sliderUmbral.hasFocus()) {
             try {
                 UmbralizacionOp uo = new UmbralizacionOp(this.sliderUmbral.getValue());
@@ -1544,7 +1554,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_sliderUmbralStateChanged
 
     private void sliderUmbralFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_sliderUmbralFocusGained
-        VentanaInterna vi = (VentanaInterna) this.escritorio.getSelectedFrame();
+        VentanaInterna vi = testVentanaInterna();
         if (vi != null) {
             imagenUmbralizadaAux = vi.getLienzo().getImage();
         }
@@ -1646,6 +1656,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton botonAbrir;
     protected javax.swing.JToggleButton botonAlisar;
     private javax.swing.JButton botonAumentar;
+    private javax.swing.JButton botonCaptura;
     private javax.swing.JButton botonContraste;
     public javax.swing.JToggleButton botonCurvaQ;
     protected javax.swing.JToggleButton botonEditar;

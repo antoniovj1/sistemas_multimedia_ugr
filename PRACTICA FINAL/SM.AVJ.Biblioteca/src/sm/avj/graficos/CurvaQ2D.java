@@ -16,7 +16,7 @@ import java.awt.geom.QuadCurve2D;
  * @author antonio
  */
 public final class CurvaQ2D extends QuadCurve2D.Double
-        implements miShape {
+        implements MiShape {
 
     Atributos attr = new Atributos();
     private Point2D pI = new Point2D.Double();

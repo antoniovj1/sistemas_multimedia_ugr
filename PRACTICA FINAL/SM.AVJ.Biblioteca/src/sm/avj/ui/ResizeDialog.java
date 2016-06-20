@@ -11,7 +11,7 @@ import java.awt.Frame;
  *
  * @author antonio
  */
-public class resizeDialog extends javax.swing.JDialog {
+public class ResizeDialog extends javax.swing.JDialog {
 
     Frame p;
     boolean editado;
@@ -22,7 +22,7 @@ public class resizeDialog extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public resizeDialog(java.awt.Frame parent, boolean modal) {
+    public ResizeDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.editado = false;
         initComponents();
@@ -63,7 +63,6 @@ public class resizeDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tamaño Imagen");
         setAlwaysOnTop(true);
-        setPreferredSize(new java.awt.Dimension(380, 180));
         setResizable(false);
 
         panelBotones.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -213,21 +212,22 @@ public class resizeDialog extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(resizeDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResizeDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(resizeDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResizeDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(resizeDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResizeDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(resizeDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResizeDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                resizeDialog dialog = new resizeDialog(new javax.swing.JFrame(), true);
+                ResizeDialog dialog = new ResizeDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

@@ -15,31 +15,31 @@ import java.awt.geom.Point2D;
  *
  * @author antonio
  */
-public interface miShape extends java.awt.Shape {
+public interface MiShape extends java.awt.Shape {
 
     /**
-     * Este metodo establece el primer punto de la figura miShape.
+     * Este metodo establece el primer punto de la figura MiShape.
      *
      * @param p
      */
     void setPointIni(Point2D p);
 
     /**
-     * Este metodo establece el segundo punto de la figura miShape.
+     * Este metodo establece el segundo punto de la figura MiShape.
      *
      * @param p
      */
     void setPointFin(Point2D p);
 
     /**
-     * Este metodo devuelve el primer punto de la figura miShape.
+     * Este metodo devuelve el primer punto de la figura MiShape.
      *
      * @return
      */
     Point2D getPointIni(); //Preguntar getBounds2D....
 
     /**
-     * Este metodo devuelve el primer punto de la figura miShape.
+     * Este metodo devuelve el primer punto de la figura MiShape.
      *
      * @return
      */
