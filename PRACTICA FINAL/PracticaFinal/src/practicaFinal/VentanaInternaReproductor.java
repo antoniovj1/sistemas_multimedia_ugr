@@ -6,25 +6,24 @@
 package practicaFinal;
 
 import java.io.File;
-import sm.sound.SMSoundRecorder;
+import sm.sound.SMClipPlayer;
+import sm.sound.SMPlayer;
 
 /**
  *
  * @author antonio
  */
-public class VentanaInternaGrabador extends javax.swing.JInternalFrame {
+public class VentanaInternaReproductor extends javax.swing.JInternalFrame {
 
-    SMSoundRecorder recorder;
+    SMPlayer player;
     String titulo_orig;
 
     /**
-     * Creates new form VentanaInternaGrabador
-     *
-     * @param f
+     * Creates new form VentanaInternaReproductor
      */
-    public VentanaInternaGrabador(File f) {
+    public VentanaInternaReproductor(File f) {
         initComponents();
-        recorder = new SMSoundRecorder(f);
+        player = new SMClipPlayer(f);
     }
 
     /**
@@ -36,9 +35,9 @@ public class VentanaInternaGrabador extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
-        jPanel1 = new javax.swing.JPanel();
-        botonGrabar = new javax.swing.JToggleButton();
+        buttonGroup = new javax.swing.ButtonGroup();
+        panel = new javax.swing.JPanel();
+        botonPlay = new javax.swing.JToggleButton();
         botonStop = new javax.swing.JToggleButton();
 
         setClosable(true);
@@ -62,79 +61,78 @@ public class VentanaInternaGrabador extends javax.swing.JInternalFrame {
             }
         });
 
-        buttonGroup1.add(botonGrabar);
-        botonGrabar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/RecordDisabled_48x48.png"))); // NOI18N
-        botonGrabar.setText("Grabar");
-        botonGrabar.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/RecordPressed_48x48.png"))); // NOI18N
-        botonGrabar.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup.add(botonPlay);
+        botonPlay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/PlayDisabled_48x48.png"))); // NOI18N
+        botonPlay.setText("Play");
+        botonPlay.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/PlayPressed_48x48.png"))); // NOI18N
+        botonPlay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonGrabarActionPerformed(evt);
+                botonPlayActionPerformed(evt);
             }
         });
 
-        buttonGroup1.add(botonStop);
+        buttonGroup.add(botonStop);
         botonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/StopDisabled_48x48.png"))); // NOI18N
         botonStop.setText("Stop");
-        botonStop.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/StopNormalRed_48x48.png"))); // NOI18N
+        botonStop.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/StopPressedBlue_48x48.png"))); // NOI18N
         botonStop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonStopActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
+        panel.setLayout(panelLayout);
+        panelLayout.setHorizontalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(botonGrabar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(botonPlay)
+                .addGap(22, 22, 22)
                 .addComponent(botonStop)
-                .addGap(24, 24, 24))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        panelLayout.setVerticalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonGrabar)
-                    .addComponent(botonStop))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonStop)
+                    .addComponent(botonPlay))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(panel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void botonGrabarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGrabarActionPerformed
-        if (recorder != null) {
-            recorder.record();
+    private void botonPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPlayActionPerformed
+        if (player != null) {
+            player.play();
             titulo_orig = this.getTitle();
-            this.setTitle(titulo_orig + "(Grabando...)");
+            this.setTitle(titulo_orig + "(Repro...)");
         }
-
-    }//GEN-LAST:event_botonGrabarActionPerformed
+    }//GEN-LAST:event_botonPlayActionPerformed
 
     private void botonStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonStopActionPerformed
-        if (recorder != null) {
-            recorder.stop();
+        if (player != null) {
+            player.stop();
             this.setTitle(titulo_orig);
         }
     }//GEN-LAST:event_botonStopActionPerformed
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
-        if (recorder != null) {
-            recorder.stop();
+        if (player != null) {
+            player.stop();
         }
     }//GEN-LAST:event_formInternalFrameClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton botonGrabar;
+    private javax.swing.JToggleButton botonPlay;
     private javax.swing.JToggleButton botonStop;
-    private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.ButtonGroup buttonGroup;
+    private javax.swing.JPanel panel;
     // End of variables declaration//GEN-END:variables
 }

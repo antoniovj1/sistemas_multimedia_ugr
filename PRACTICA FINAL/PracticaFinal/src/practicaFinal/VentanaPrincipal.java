@@ -34,6 +34,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import sm.avj.imagen.SepiaOp;
 import sm.avj.imagen.UmbralizacionOp;
@@ -842,43 +843,79 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_botonNuevoActionPerformed
 
+    private String getFileExtension(File file) {
+        String name = file.getName();
+        try {
+            return name.substring(name.lastIndexOf(".") + 1);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    private boolean pertenece(String s, String v[]) {
+        for (String st : v) {
+            if (st.equals(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void botonAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAbrirActionPerformed
         JFileChooser dlg = new JFileChooser();
 
-        String extensiones[];
-        extensiones = ImageIO.getReaderFormatNames();
+        String extensionesImg[] = ImageIO.getReaderFormatNames();
 
-        Set<String> extSinRep = new LinkedHashSet<>();
-        for (String extension : extensiones) {
-            extSinRep.add(extension.toLowerCase());
+        AudioFileFormat.Type tipos[] = AudioSystem.getAudioFileTypes();
+        String extensionesAu[] = new String[tipos.length];
+
+        int i = 0;
+        for (AudioFileFormat.Type tipo : tipos) {
+            extensionesAu[i] = tipo.getExtension();
+            i++;
         }
 
-        for (String extension : extSinRep) {
-            dlg.addChoosableFileFilter(new FileNameExtensionFilter(extension, extension));
-        }
+        dlg.addChoosableFileFilter(new FileNameExtensionFilter("Imagenes " + Arrays.toString(extensionesImg), extensionesImg));
+        dlg.addChoosableFileFilter(new FileNameExtensionFilter("Audio " + Arrays.toString(extensionesAu), extensionesAu));
 
         int resp = dlg.showOpenDialog(this);
+
         if (resp == JFileChooser.APPROVE_OPTION) {
             File f = dlg.getSelectedFile();
-            BufferedImage img = null;
-            try {
-                img = ImageIO.read(f);
-            } catch (IOException ex) {
-                Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            VentanaInterna vi = new VentanaInterna(this);
-            vi.getLienzo().setImage(img);
-            this.escritorio.add(vi);
-            vi.setTitle(f.getName());
+            String ext = getFileExtension(f);
 
-            VentanaInterna va = (VentanaInterna) escritorio.getSelectedFrame();
-            if (va != null) {
-                vi.setLocation(va.getX() + 15, va.getY() + 15);
+            if (pertenece(ext, extensionesImg)) {
+
+                VentanaInterna vi = new VentanaInterna(this);
+                BufferedImage img = null;
+                try {
+                    img = ImageIO.read(f);
+                } catch (IOException ex) {
+                    Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                vi = new VentanaInterna(this);
+                vi.getLienzo().setImage(img);
+                configInternalFrame(vi, f);
+
+            } else if (pertenece(ext, extensionesAu)) {
+                VentanaInternaReproductor vi = new VentanaInternaReproductor(f);
+                configInternalFrame(vi, f);
             }
 
-            vi.setVisible(true);
         }
     }//GEN-LAST:event_botonAbrirActionPerformed
+
+    private void configInternalFrame(JInternalFrame ji, File f) {
+        ji.setTitle(f.getName());
+        this.escritorio.add(ji);
+        VentanaInterna va = (VentanaInterna) escritorio.getSelectedFrame();
+
+        if (va != null) {
+            ji.setLocation(va.getX() + 15, va.getY() + 15);
+        }
+
+        ji.setVisible(true);
+    }
 
     /**
      * @TODO Preguntar a Jesus.
@@ -1512,20 +1549,20 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         JFileChooser dlg = new JFileChooser();
 
         AudioFileFormat.Type tipos[] = AudioSystem.getAudioFileTypes();
+        String extensionesAu[] = new String[tipos.length];
 
-        Set<String> extSinRep = new LinkedHashSet<>();
+        int i = 0;
         for (AudioFileFormat.Type tipo : tipos) {
-            extSinRep.add(tipo.toString().toLowerCase());
+            extensionesAu[i] = tipo.getExtension();
+            i++;
         }
 
-        for (String extension : extSinRep) {
-            dlg.addChoosableFileFilter(new FileNameExtensionFilter(extension, extension));
-        }
+        dlg.addChoosableFileFilter(new FileNameExtensionFilter("Audio " + Arrays.toString(extensionesAu), extensionesAu));
 
         int resp = dlg.showOpenDialog(this);
         if (resp == JFileChooser.APPROVE_OPTION) {
             File f = dlg.getSelectedFile();
-             
+
             try {
                 VentanaInternaGrabador vi = new VentanaInternaGrabador(f);
                 this.escritorio.add(vi);
