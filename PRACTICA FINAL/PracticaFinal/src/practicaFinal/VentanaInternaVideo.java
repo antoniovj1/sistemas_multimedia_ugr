@@ -62,6 +62,17 @@ public class VentanaInternaVideo extends javax.swing.JInternalFrame {
         }
     }
 
+   /* public BufferedImage getFrame() {
+        FrameGrabbingControl fgc;
+        String claseCtr = "javax.media.control.FrameGrabbingControl ";
+        fgc = (FrameGrabbingControl) player.getControl(claseCtr);
+        Buffer bufferFrame = fgc.grabFrame();
+        BufferToImage bti;
+        bti = new BufferToImage((VideoFormat) bufferFrame.getFormat());
+        Image img = bti.createImage(bufferFrame);
+        return (BufferedImage) img;
+    }*/
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

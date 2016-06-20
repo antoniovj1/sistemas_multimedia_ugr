@@ -159,6 +159,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         miAbrir = new javax.swing.JMenuItem();
         miGuardar = new javax.swing.JMenuItem();
         miGrabar = new javax.swing.JMenuItem();
+        miWebCam = new javax.swing.JMenuItem();
         menuEditar = new javax.swing.JMenu();
         miVerBarraEstado = new javax.swing.JCheckBoxMenuItem();
         miVerToolsBar = new javax.swing.JCheckBoxMenuItem();
@@ -170,7 +171,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         selecionColores = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Paint Básico");
+        setTitle("Práctica Final ");
 
         barraHerramientas.setRollover(true);
 
@@ -381,6 +382,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         botonCaptura.setFocusable(false);
         botonCaptura.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botonCaptura.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        botonCaptura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCapturaActionPerformed(evt);
+            }
+        });
         barraHerramientas.add(botonCaptura);
 
         getContentPane().add(barraHerramientas, java.awt.BorderLayout.PAGE_START);
@@ -471,7 +477,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         panelSinusoidal.add(botonSeno);
 
-        botonSepia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/iconosPractica11/sepia.png"))); // NOI18N
+        botonSepia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/sepia.png"))); // NOI18N
         botonSepia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonSepiaActionPerformed(evt);
@@ -575,7 +581,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         panelBinaryOp.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Binarias"));
 
-        botonSuma.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/iconosPractica11/suma.png"))); // NOI18N
+        botonSuma.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/suma.png"))); // NOI18N
         botonSuma.setPreferredSize(new java.awt.Dimension(26, 26));
         botonSuma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -584,7 +590,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         panelBinaryOp.add(botonSuma);
 
-        botonResta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/iconosPractica11/resta.png"))); // NOI18N
+        botonResta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/resta.png"))); // NOI18N
         botonResta.setPreferredSize(new java.awt.Dimension(26, 26));
         botonResta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -673,6 +679,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         menuArchivo.add(miGrabar);
+
+        miWebCam.setText("WebCam");
+        miWebCam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miWebCamActionPerformed(evt);
+            }
+        });
+        menuArchivo.add(miWebCam);
 
         barraMenu.add(menuArchivo);
 
@@ -1601,6 +1615,24 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_miGrabarActionPerformed
 
+    private void miWebCamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miWebCamActionPerformed
+        VentanaInternaWebCam vw = new VentanaInternaWebCam();
+        this.escritorio.add(vw);
+        vw.setVisible(true);
+    }//GEN-LAST:event_miWebCamActionPerformed
+
+    private void botonCapturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCapturaActionPerformed
+        JInternalFrame vw = this.escritorio.getSelectedFrame();
+        if (vw != null && vw instanceof VentanaInternaWebCam) {
+            VentanaInterna vi = new VentanaInterna(this);
+            vi.getLienzo().setImage(((VentanaInternaWebCam) vw).getFrame());
+            this.escritorio.add(vi);
+            vi.setLocation(vw.getX()+25,vw.getY()+25);
+            vi.setTitle("Captura");
+            vi.setVisible(true);
+        }
+    }//GEN-LAST:event_botonCapturaActionPerformed
+
     /**
      * @param w
      * @return
@@ -1700,6 +1732,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem miNuevo;
     private javax.swing.JCheckBoxMenuItem miVerBarraEstado;
     private javax.swing.JCheckBoxMenuItem miVerToolsBar;
+    private javax.swing.JMenuItem miWebCam;
     private javax.swing.JPanel panelBinaryOp;
     private javax.swing.JPanel panelBrillo;
     private javax.swing.JPanel panelContraste;

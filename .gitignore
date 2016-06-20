@@ -24,4 +24,7 @@
 !mediaplayer.jar
 !multiplayer.jar
 !sound.jar
-
+!bridj-0.7.0.jar
+!slf4j.jar
+!webcam-capture-0.3.11.jar
+!logback.jar
