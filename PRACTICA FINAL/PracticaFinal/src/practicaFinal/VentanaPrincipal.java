@@ -29,12 +29,14 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.media.MediaLocator;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import sm.avj.imagen.SepiaOp;
 import sm.avj.imagen.UmbralizacionOp;
@@ -864,10 +866,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void botonAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAbrirActionPerformed
         JFileChooser dlg = new JFileChooser();
 
-        String extensionesImg[] = ImageIO.getReaderFormatNames();
-
         AudioFileFormat.Type tipos[] = AudioSystem.getAudioFileTypes();
         String extensionesAu[] = new String[tipos.length];
+
+        String extensionesVi[] = {"avi", "gsm", "mpg", "mp2", "mov"};
 
         int i = 0;
         for (AudioFileFormat.Type tipo : tipos) {
@@ -875,8 +877,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             i++;
         }
 
-        dlg.addChoosableFileFilter(new FileNameExtensionFilter("Imagenes " + Arrays.toString(extensionesImg), extensionesImg));
+        dlg.addChoosableFileFilter(new FileNameExtensionFilter("Imagenes " + Arrays.toString(ImageIO.getReaderFileSuffixes()), ImageIO.getWriterFormatNames()));
         dlg.addChoosableFileFilter(new FileNameExtensionFilter("Audio " + Arrays.toString(extensionesAu), extensionesAu));
+        dlg.addChoosableFileFilter(new FileNameExtensionFilter("Vídeo" + Arrays.toString(extensionesVi), extensionesVi));
 
         int resp = dlg.showOpenDialog(this);
 
@@ -884,22 +887,30 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             File f = dlg.getSelectedFile();
             String ext = getFileExtension(f);
 
-            if (pertenece(ext, extensionesImg)) {
+            try {
+                if (pertenece(ext, ImageIO.getWriterFormatNames())) {
+                    BufferedImage img = null;
+                    try {
+                        img = ImageIO.read(f);
+                    } catch (IOException ex) {
+                        Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    VentanaInterna vi = new VentanaInterna(this);
+                    vi.getLienzo().setImage(img);
+                    configInternalFrame(vi, f);
 
-                VentanaInterna vi = new VentanaInterna(this);
-                BufferedImage img = null;
-                try {
-                    img = ImageIO.read(f);
-                } catch (IOException ex) {
-                    Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                } else if (pertenece(ext, extensionesAu)) {
+                    VentanaInternaReproductor vi = new VentanaInternaReproductor(f);
+                    configInternalFrame(vi, f);
+                } else if (pertenece(ext, extensionesVi)) {
+                    VentanaInternaVideo vi = new VentanaInternaVideo(f);
+                    configInternalFrame(vi, f);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Archivo no soportado", "Error", 0);
                 }
-                vi = new VentanaInterna(this);
-                vi.getLienzo().setImage(img);
-                configInternalFrame(vi, f);
-
-            } else if (pertenece(ext, extensionesAu)) {
-                VentanaInternaReproductor vi = new VentanaInternaReproductor(f);
-                configInternalFrame(vi, f);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "No se pudo abrir el archivo", "Error", 0);
+                
             }
 
         }
