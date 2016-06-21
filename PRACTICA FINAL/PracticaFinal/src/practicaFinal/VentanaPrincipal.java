@@ -163,6 +163,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         menuEditar = new javax.swing.JMenu();
         miVerBarraEstado = new javax.swing.JCheckBoxMenuItem();
         miVerToolsBar = new javax.swing.JCheckBoxMenuItem();
+        miVerBarraImagenes = new javax.swing.JCheckBoxMenuItem();
         menuImagen = new javax.swing.JMenu();
         cambiarTamanioImagen = new javax.swing.JMenuItem();
         duplicarImagen = new javax.swing.JMenuItem();
@@ -706,6 +707,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         menuEditar.add(miVerToolsBar);
+
+        miVerBarraImagenes.setSelected(true);
+        miVerBarraImagenes.setText("Barra Imágenes");
+        miVerBarraImagenes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miVerBarraImagenesActionPerformed(evt);
+            }
+        });
+        menuEditar.add(miVerBarraImagenes);
 
         barraMenu.add(menuEditar);
 
@@ -1613,9 +1623,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void botonCapturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCapturaActionPerformed
         JInternalFrame vw = this.escritorio.getSelectedFrame();
-        if (vw != null && vw instanceof VentanaInternaWebCam) {
+        if (vw != null) {
+            BufferedImage img = null;
+            if (vw instanceof VentanaInternaWebCam) {
+                img = ((VentanaInternaWebCam) vw).getFrame();
+
+            } else if (vw instanceof VentanaInternaVideo) {
+                img = ((VentanaInternaVideo) vw).getFrame();
+            }
+            
             VentanaInternaLienzo vi = new VentanaInternaLienzo(this);
-            vi.getLienzo().setImage(((VentanaInternaWebCam) vw).getFrame());
+            vi.getLienzo().setImage(img);
             this.escritorio.add(vi);
             vi.setLocation(vw.getX() + 25, vw.getY() + 25);
             vi.setTitle("Captura");
@@ -1656,11 +1674,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_opcionesRellenoActionPerformed
 
-    /**
-     * @param w
-     * @return
-     * @TODO ¿Deberia estar aqui ? ARREGLAR
-     */
+    private void miVerBarraImagenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVerBarraImagenesActionPerformed
+        this.panelInferior.setVisible(this.miVerBarraImagenes.isSelected());
+    }//GEN-LAST:event_miVerBarraImagenesActionPerformed
+
     public LookupTable seno(double w) {
         w = Math.toRadians(w);
         double K = 255.0 / Math.sin(Math.toRadians(90.0));
@@ -1753,6 +1770,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem miGuardar;
     private javax.swing.JMenuItem miNuevo;
     private javax.swing.JCheckBoxMenuItem miVerBarraEstado;
+    private javax.swing.JCheckBoxMenuItem miVerBarraImagenes;
     private javax.swing.JCheckBoxMenuItem miVerToolsBar;
     private javax.swing.JMenuItem miWebCam;
     public javax.swing.JComboBox<String> opcionesRelleno;

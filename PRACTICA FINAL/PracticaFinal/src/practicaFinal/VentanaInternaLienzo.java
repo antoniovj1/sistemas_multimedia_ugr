@@ -40,9 +40,7 @@ public class VentanaInternaLienzo extends javax.swing.JInternalFrame {
         this.getContentPane().addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent evt) {
-                if (evt.getOppositeComponent() != ventanaPadre.sliderBend) {
-                    updateParent();
-                }
+                    updateParent();     
             }
         });
 
