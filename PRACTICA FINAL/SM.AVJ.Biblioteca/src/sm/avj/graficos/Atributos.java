@@ -158,7 +158,7 @@ public class Atributos {
         this.gradienteB = gradienteB;
     }
 
-    public void setConfigGradiente(int tipo, miShape s) {
+    public void setConfigGradiente(int tipo, MiShape s) {
         tipoGrad = tipo;
 
         calcularPuntosGradiente(tipo, s);
@@ -167,7 +167,7 @@ public class Atributos {
         gradienteB = true;
     }
 
-    void updateGradiente(miShape s) {
+    void updateGradiente(MiShape s) {
         calcularPuntosGradiente(tipoGrad, s);
         gradiente = new GradientPaint(p1, colorFrente, p2, colorFondo);
     }
@@ -177,7 +177,7 @@ public class Atributos {
     }
 
     
-    private void calcularPuntosGradiente(int tipo, miShape s) {
+    private void calcularPuntosGradiente(int tipo, MiShape s) {
         Rectangulo2D rect = new Rectangulo2D(s.getBounds2D());
         switch (tipo) {
             case 1: // Horizontal

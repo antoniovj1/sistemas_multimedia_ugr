@@ -17,7 +17,7 @@ import java.awt.geom.Rectangle2D;
  * @author antonio
  */
 public class Rectangulo2D extends java.awt.geom.Rectangle2D.Double
-        implements miShape {
+        implements MiShape {
 
     Atributos attr = new Atributos();
 
@@ -77,9 +77,9 @@ public class Rectangulo2D extends java.awt.geom.Rectangle2D.Double
     }
 
     /**
-     * Este metodo establece los dos puntos que forman un miShape. throw new
-     * UnsupportedOperationException("Not supported yet."); //To change body of
-     * generated methods, choose Tools | Templates.
+     * Este metodo establece los dos puntos que forman un MiShape. throw new
+ UnsupportedOperationException("Not supported yet."); //To change body of
+ generated methods, choose Tools | Templates.
      *
      * @param p1
      * @param p2

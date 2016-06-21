@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import sm.avj.graficos.CurvaQ2D;
 import sm.avj.graficos.Forma;
 import sm.avj.graficos.Rectangulo2D;
-import sm.avj.graficos.miShape;
+import sm.avj.graficos.MiShape;
 
 /**
  *
@@ -36,10 +36,10 @@ public class Lienzo extends javax.swing.JPanel {
     final float WIDTH_EDITAR = 2.0f;
 
     private Forma forma;
-    private miShape sh;
-    miShape clip;
+    private MiShape sh;
+    MiShape clip;
     Rectangulo2D boundigBox;
-    private final List<miShape> vShape;
+    private final List<MiShape> vShape;
     private Point2D puntoClick, puntoActual;
     private boolean editar;
     private boolean poligono_empezado;
@@ -73,7 +73,7 @@ public class Lienzo extends javax.swing.JPanel {
         AlphaComposite comp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
         RenderingHints antialiasing = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 
-        for (miShape s : vShape) {
+        for (MiShape s : vShape) {
             s.paint(g2d);
 
             //Restauro el objeto g2d
@@ -86,19 +86,19 @@ public class Lienzo extends javax.swing.JPanel {
 
     }
 
-    private miShape createShape(Point2D p1) throws ClassNotFoundException, NoSuchMethodException,
+    private MiShape createShape(Point2D p1) throws ClassNotFoundException, NoSuchMethodException,
             IllegalArgumentException, InvocationTargetException,
             InstantiationException, IllegalAccessException {
 
         Class c = Class.forName(forma.getNombreClase());
         Constructor constructor = c.getConstructor(new Class[]{Point2D.class});
 
-        miShape s = (miShape) constructor.newInstance(p1);
+        MiShape s = (MiShape) constructor.newInstance(p1);
 
         return s;
     }
 
-    private miShape getSelectedSape(Point2D p) {
+    private MiShape getSelectedSape(Point2D p) {
         int i = vShape.size() - 1;
 
         while (i >= 0) {
@@ -110,7 +110,7 @@ public class Lienzo extends javax.swing.JPanel {
         return null;
     }
 
-    private void moveFront(miShape sh) {
+    private void moveFront(MiShape sh) {
         vShape.remove(sh);
         vShape.add(vShape.size(), sh);
     }
@@ -414,11 +414,11 @@ public class Lienzo extends javax.swing.JPanel {
         this.editar = editar;
     }
 
-    public miShape getClip() {
+    public MiShape getClip() {
         return clip;
     }
 
-    public void setClip(miShape clip) {
+    public void setClip(MiShape clip) {
         this.clip = clip;
     }
 

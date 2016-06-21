@@ -16,7 +16,7 @@ import java.awt.geom.Point2D;
  * @author antonio
  */
 public class Elipse2D extends java.awt.geom.Ellipse2D.Double
-        implements miShape {
+        implements MiShape {
 
     Atributos attr = new Atributos();
 
@@ -61,7 +61,7 @@ public class Elipse2D extends java.awt.geom.Ellipse2D.Double
     }
 
     /**
-     * Este metodo establece los dos puntos que forman un miShape.
+     * Este metodo establece los dos puntos que forman un MiShape.
      *
      * @param p1
      * @param p2
