@@ -374,7 +374,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         barraHerramientas.add(botonAlisar);
 
-        botonCaptura.setText("Captura");
+        botonCaptura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/camera.png"))); // NOI18N
+        botonCaptura.setToolTipText("Captura WebCam");
         botonCaptura.setFocusable(false);
         botonCaptura.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botonCaptura.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
