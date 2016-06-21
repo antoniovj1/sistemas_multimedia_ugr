@@ -16,7 +16,7 @@ import java.awt.geom.QuadCurve2D;
  * @author antonio
  */
 public final class CurvaQ2D extends QuadCurve2D.Double
-        implements MiShape {
+        implements miShape {
 
     Atributos attr = new Atributos();
     private Point2D pI = new Point2D.Double();
@@ -81,8 +81,8 @@ public final class CurvaQ2D extends QuadCurve2D.Double
         pI.setLocation(pI.getX() + pos.getX(), pI.getY() + pos.getY());
         pF.setLocation(pF.getX() + pos.getX(), pF.getY() + pos.getY());
         pC.setLocation(pC.getX() + pos.getX(), pC.getY() + pos.getY());
- 
-        this.setCurve(pI,pC,pF);
+
+        this.setCurve(pI, pC, pF);
     }
 
     @Override
@@ -92,6 +92,10 @@ public final class CurvaQ2D extends QuadCurve2D.Double
 
         if (isRelleno()) {
             g2d.fill(this);
+        }
+
+        if (attr.isGradiente()) {
+            attr.updateGradiente(this);
         }
 
         g2d.draw(this);
@@ -128,13 +132,23 @@ public final class CurvaQ2D extends QuadCurve2D.Double
     }
 
     @Override
-    public Color getColor() {
-        return attr.getColor();
+    public Color getColorFrente() {
+        return attr.getColorFrente();
     }
 
     @Override
-    public void setColor(Color color) {
-        attr.setColor(color);
+    public void setColorFrente(Color color) {
+        attr.setColorFrente(color);
+    }
+
+    @Override
+    public Color getColorFondo() {
+        return attr.getColorFondo();
+    }
+
+    @Override
+    public void setColorFondo(Color color) {
+        attr.setColorFondo(color);
     }
 
     @Override
@@ -172,5 +186,25 @@ public final class CurvaQ2D extends QuadCurve2D.Double
     @Override
     public void setStrokeWidth(float w) {
         attr.setStrokeWidth(w);
+    }
+
+    @Override
+    public void setGradiente(boolean gradiente) {
+        attr.setGradiente(gradiente);
+    }
+
+    @Override
+    public boolean isGradiente() {
+        return attr.isGradiente();
+    }
+
+    @Override
+    public void setConfigGradiente(int tipo) {
+        attr.setConfigGradiente(tipo, this);
+    }
+
+    @Override
+    public int getTipoGradiente() {
+        return attr.getTipoGrad();
     }
 }

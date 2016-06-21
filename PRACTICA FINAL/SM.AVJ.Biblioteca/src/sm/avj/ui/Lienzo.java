@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import sm.avj.graficos.CurvaQ2D;
 import sm.avj.graficos.Forma;
 import sm.avj.graficos.Rectangulo2D;
-import sm.avj.graficos.MiShape;
+import sm.avj.graficos.miShape;
 
 /**
  *
@@ -36,10 +36,10 @@ public class Lienzo extends javax.swing.JPanel {
     final float WIDTH_EDITAR = 2.0f;
 
     private Forma forma;
-    private MiShape sh;
-    MiShape clip;
+    private miShape sh;
+    miShape clip;
     Rectangulo2D boundigBox;
-    private final List<MiShape> vShape;
+    private final List<miShape> vShape;
     private Point2D puntoClick, puntoActual;
     private boolean editar;
     private boolean poligono_empezado;
@@ -53,7 +53,7 @@ public class Lienzo extends javax.swing.JPanel {
         this.forma = Forma.PUNTO;
 
         boundigBox = new Rectangulo2D();
-        boundigBox.setColor(Color.GRAY);
+        boundigBox.setColorFrente(Color.GRAY);
         boundigBox.setTransparencia(true);
         boundigBox.setStrokeWidth(WIDTH_EDITAR);
         boundigBox.setStrokeDash(DASH_EDITAR);
@@ -73,7 +73,7 @@ public class Lienzo extends javax.swing.JPanel {
         AlphaComposite comp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
         RenderingHints antialiasing = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 
-        for (MiShape s : vShape) {
+        for (miShape s : vShape) {
             s.paint(g2d);
 
             //Restauro el objeto g2d
@@ -86,19 +86,19 @@ public class Lienzo extends javax.swing.JPanel {
 
     }
 
-    private MiShape createShape(Point2D p1) throws ClassNotFoundException, NoSuchMethodException,
+    private miShape createShape(Point2D p1) throws ClassNotFoundException, NoSuchMethodException,
             IllegalArgumentException, InvocationTargetException,
             InstantiationException, IllegalAccessException {
 
         Class c = Class.forName(forma.getNombreClase());
         Constructor constructor = c.getConstructor(new Class[]{Point2D.class});
 
-        MiShape s = (MiShape) constructor.newInstance(p1);
+        miShape s = (miShape) constructor.newInstance(p1);
 
         return s;
     }
 
-    private MiShape getSelectedSape(Point2D p) {
+    private miShape getSelectedSape(Point2D p) {
         int i = vShape.size() - 1;
 
         while (i >= 0) {
@@ -110,7 +110,7 @@ public class Lienzo extends javax.swing.JPanel {
         return null;
     }
 
-    private void moveFront(MiShape sh) {
+    private void moveFront(miShape sh) {
         vShape.remove(sh);
         vShape.add(vShape.size(), sh);
     }
@@ -260,17 +260,31 @@ public class Lienzo extends javax.swing.JPanel {
         this.forma = forma;
     }
 
-    public Color getColor() {
+    public Color getColorFrente() {
         if (sh != null) {
-            return sh.getColor();
+            return sh.getColorFrente();
         } else {
             return null;
         }
     }
 
-    public void setColor(Color color) {
+    public void setColorFrente(Color color) {
         if (sh != null) {
-            sh.setColor(color);
+            sh.setColorFrente(color);
+        }
+    }
+
+    public Color getColorFondo() {
+        if (sh != null) {
+            return sh.getColorFondo();
+        } else {
+            return null;
+        }
+    }
+
+    public void setColorFondo(Color color) {
+        if (sh != null) {
+            sh.setColorFondo(color);
         }
     }
 
@@ -364,6 +378,34 @@ public class Lienzo extends javax.swing.JPanel {
         }
     }
 
+    public boolean isGradiente() {
+        if (sh != null) {
+            return sh.isGradiente();
+        } else {
+            return false;
+        }
+    }
+
+    public void setGradiente(boolean gradiente) {
+        if (sh != null) {
+            sh.setGradiente(gradiente);
+        }
+    }
+
+    public void setConfigGradiente(int tipo) {
+        if (sh != null) {
+            sh.setConfigGradiente(tipo);
+        }
+    }
+
+    public int getTipoGradiente() {
+        if (sh != null) {
+            return sh.getTipoGradiente();
+        } else {
+            return 0;
+        }
+    }
+
     public boolean isEditar() {
         return editar;
     }
@@ -372,11 +414,11 @@ public class Lienzo extends javax.swing.JPanel {
         this.editar = editar;
     }
 
-    public MiShape getClip() {
+    public miShape getClip() {
         return clip;
     }
 
-    public void setClip(MiShape clip) {
+    public void setClip(miShape clip) {
         this.clip = clip;
     }
 

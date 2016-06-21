@@ -8,6 +8,8 @@ package practicaFinal;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import sm.avj.ui.Lienzo2DImagen;
 
@@ -34,6 +36,15 @@ public class VentanaInternaLienzo extends javax.swing.JInternalFrame {
         g.fillRect(0, 0, img.getWidth(), img.getHeight());
 
         lienzo.setImage(img);
+
+        this.getContentPane().addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent evt) {
+                if (evt.getOppositeComponent() != ventanaPadre.sliderBend) {
+                    updateParent();
+                }
+            }
+        });
 
     }
 
@@ -103,27 +114,45 @@ public class VentanaInternaLienzo extends javax.swing.JInternalFrame {
 
     private void updateParent() {
         if (lienzo.isFigSelected() && lienzo.isEditar()) {
-            this.ventanaPadre.botonRelleno.setSelected(lienzo.isRelleno());
+            if (lienzo.isRelleno() && !lienzo.isGradiente()) {
+                this.ventanaPadre.opcionesRelleno.setSelectedIndex(1);
+            } else if (!lienzo.isRelleno()) {
+                this.ventanaPadre.opcionesRelleno.setSelectedIndex(0);
+            }
+            if (lienzo.isGradiente()) {
+                switch (lienzo.getTipoGradiente()) {
+                    case 1:
+                        this.ventanaPadre.opcionesRelleno.setSelectedIndex(3);
+                        break;
+                    case 2:
+                        this.ventanaPadre.opcionesRelleno.setSelectedIndex(2);
+                        break;
+                    case 3:
+                        this.ventanaPadre.opcionesRelleno.setSelectedIndex(4);
+                        break;
+                }
+            }
+
             this.ventanaPadre.botonAlisar.setSelected(lienzo.isAlisado());
             this.ventanaPadre.botonTransparencia.setSelected(lienzo.isTransparencia());
             this.ventanaPadre.spinnerGrosor.setValue(lienzo.getStrokeWidth().intValue());
-            this.ventanaPadre.setStrokeDash(((BasicStroke)lienzo.getStroke()).getDashArray());
-            this.ventanaPadre.menuColores.setBackground(lienzo.getColor());
+            this.ventanaPadre.setStrokeDash(((BasicStroke) lienzo.getStroke()).getDashArray());
+            this.ventanaPadre.menuColores.setBackground(lienzo.getColorFrente());
         }
 
-        
         /**
          * ¿ Siempre activados o solo activarlos al seleccionar una figura ?
-        
+         *
+         */
         boolean actv = (lienzo.isFigSelected() && lienzo.isEditar()) == true;
 
-        this.ventanaPadre.botonRelleno.setEnabled(actv);
         this.ventanaPadre.botonAlisar.setEnabled(actv);
         this.ventanaPadre.botonTransparencia.setEnabled(actv);
         this.ventanaPadre.spinnerGrosor.setEnabled(actv);
         this.ventanaPadre.menuColores.setEnabled(actv);
         this.ventanaPadre.sliderTransparencia.setVisible(actv);
-        this.ventanaPadre.menuStroke.setEnabled(actv);*/
+        this.ventanaPadre.menuStroke.setEnabled(actv);
+        this.ventanaPadre.opcionesRelleno.setEnabled(actv);
 
         switch (lienzo.getForma()) {
             case PUNTO:

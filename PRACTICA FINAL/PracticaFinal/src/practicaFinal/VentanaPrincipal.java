@@ -115,7 +115,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         Icon icons[] = {stk1,stk2,stk3,stk4};
         menuStroke = new javax.swing.JComboBox(icons);
-        botonRelleno = new javax.swing.JToggleButton();
+        opcionesRelleno = new javax.swing.JComboBox<>();
         botonTransparencia = new javax.swing.JToggleButton();
         sliderTransparencia = new javax.swing.JSlider();
         botonAlisar = new javax.swing.JToggleButton();
@@ -334,17 +334,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         barraHerramientas.add(menuStroke);
 
-        botonRelleno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/rellenar.png"))); // NOI18N
-        botonRelleno.setToolTipText("Relleno");
-        botonRelleno.setFocusable(false);
-        botonRelleno.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        botonRelleno.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        botonRelleno.addActionListener(new java.awt.event.ActionListener() {
+        opcionesRelleno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sin Relleno", "Relleno", "Gradiente Vertical", "Gradiente Horizontal", "Gradiente Diagonal" }));
+        opcionesRelleno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonRellenoActionPerformed(evt);
+                opcionesRellenoActionPerformed(evt);
             }
         });
-        barraHerramientas.add(botonRelleno);
+        barraHerramientas.add(opcionesRelleno);
 
         botonTransparencia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/transparencia.png"))); // NOI18N
         botonTransparencia.setToolTipText("Transparencia");
@@ -828,14 +824,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.repaint();
     }//GEN-LAST:event_spinnerGrosorStateChanged
 
-    private void botonRellenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRellenoActionPerformed
-        VentanaInternaLienzo vi = testVentanaInterna();
-        if (vi != null) {
-            vi.getLienzo().setRelleno(this.botonRelleno.isSelected());
-        }
-        this.repaint();
-    }//GEN-LAST:event_botonRellenoActionPerformed
-
     private void botonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEditarActionPerformed
         VentanaInternaLienzo vi = testVentanaInterna();
         if (vi != null) {
@@ -867,7 +855,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         VentanaInternaLienzo vi = new VentanaInternaLienzo(this);
         escritorio.add(vi);
 
-        VentanaInternaLienzo va = (VentanaInternaLienzo) escritorio.getSelectedFrame();
+        JInternalFrame va = escritorio.getSelectedFrame();
         if (va != null) {
             vi.setLocation(va.getX() + 15, va.getY() + 15);
         }
@@ -1007,7 +995,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         VentanaInternaLienzo vi = (VentanaInternaLienzo) this.escritorio.getSelectedFrame();
         if (vi != null) {
-            vi.getLienzo().setColor(this.menuColores.getBackground());
+            vi.getLienzo().setColorFrente(this.menuColores.getBackground());
             repaint();
         }
     }//GEN-LAST:event_menuColoresActionPerformed
@@ -1437,14 +1425,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         if (vi != null) {
             SelectorColoresDialog sc = new SelectorColoresDialog(this, true);
 
-            sc.setColor(vi.getLienzo().getColor());
+            sc.setColorFrente(vi.getLienzo().getColorFrente());
+            sc.setColorFondo(vi.getLienzo().getColorFondo());
             sc.setVisible(true);
 
             if (sc.isSeleccionado()) {
-                vi.getLienzo().setColor(sc.getColor());
-                this.menuColores.setBackground(sc.getColor());
+                vi.getLienzo().setColorFrente(sc.getColorFrente());
+                vi.getLienzo().setColorFondo(sc.getColorFondo());
+                this.menuColores.setBackground(sc.getColorFrente());
             }
-
             repaint();
         }
     }//GEN-LAST:event_selecionColoresActionPerformed
@@ -1633,6 +1622,39 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_botonCapturaActionPerformed
 
+    private void opcionesRellenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionesRellenoActionPerformed
+        VentanaInternaLienzo vi = testVentanaInterna();
+        if (vi != null) {
+
+            int item = this.opcionesRelleno.getSelectedIndex();
+
+            switch (item) {
+                case 0:
+                    vi.getLienzo().setRelleno(false);
+                    vi.getLienzo().setGradiente(false);
+                    break;
+                case 1:
+                    vi.getLienzo().setRelleno(true);
+                    vi.getLienzo().setGradiente(false);
+                    break;
+                case 2:
+                    vi.getLienzo().setRelleno(true);
+                    vi.getLienzo().setConfigGradiente(2);
+                    break;
+                case 3:
+                    vi.getLienzo().setRelleno(true);
+                    vi.getLienzo().setConfigGradiente(1);
+                    break;
+                case 4:
+                    vi.getLienzo().setRelleno(true);
+                    vi.getLienzo().setConfigGradiente(3);
+                    break;
+
+            }
+            repaint();
+        }
+    }//GEN-LAST:event_opcionesRellenoActionPerformed
+
     /**
      * @param w
      * @return
@@ -1705,7 +1727,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     protected javax.swing.JToggleButton botonPunto;
     protected javax.swing.JToggleButton botonRectangulo;
     private javax.swing.JButton botonReducir;
-    protected javax.swing.JToggleButton botonRelleno;
     private javax.swing.JButton botonResta;
     private javax.swing.JButton botonSeno;
     private javax.swing.JButton botonSepia;
@@ -1733,6 +1754,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem miVerBarraEstado;
     private javax.swing.JCheckBoxMenuItem miVerToolsBar;
     private javax.swing.JMenuItem miWebCam;
+    public javax.swing.JComboBox<String> opcionesRelleno;
     private javax.swing.JPanel panelBinaryOp;
     private javax.swing.JPanel panelBrillo;
     private javax.swing.JPanel panelContraste;

@@ -67,6 +67,22 @@
         <Property name="horizontalGap" type="int" value="35"/>
       </Layout>
       <SubComponents>
+        <Component class="javax.swing.JButton" name="botonColorFrente">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Color Frente"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonColorFrenteActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="botonColorFondo">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Color Fondo"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonColorFondoActionPerformed"/>
+          </Events>
+        </Component>
         <Component class="javax.swing.JButton" name="botonCancelar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cancelar"/>

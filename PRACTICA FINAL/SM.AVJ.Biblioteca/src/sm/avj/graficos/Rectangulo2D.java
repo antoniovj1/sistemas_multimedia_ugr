@@ -17,7 +17,7 @@ import java.awt.geom.Rectangle2D;
  * @author antonio
  */
 public class Rectangulo2D extends java.awt.geom.Rectangle2D.Double
-        implements MiShape {
+        implements miShape {
 
     Atributos attr = new Atributos();
 
@@ -77,9 +77,9 @@ public class Rectangulo2D extends java.awt.geom.Rectangle2D.Double
     }
 
     /**
-     * Este metodo establece los dos puntos que forman un MiShape. throw new
- UnsupportedOperationException("Not supported yet."); //To change body of
- generated methods, choose Tools | Templates.
+     * Este metodo establece los dos puntos que forman un miShape. throw new
+     * UnsupportedOperationException("Not supported yet."); //To change body of
+     * generated methods, choose Tools | Templates.
      *
      * @param p1
      * @param p2
@@ -124,6 +124,10 @@ public class Rectangulo2D extends java.awt.geom.Rectangle2D.Double
             g2d.fill(this);
         }
 
+        if (attr.isGradiente()) {
+            attr.updateGradiente(this);
+        }
+
         g2d.draw(this);
     }
 
@@ -158,13 +162,23 @@ public class Rectangulo2D extends java.awt.geom.Rectangle2D.Double
     }
 
     @Override
-    public Color getColor() {
-        return attr.getColor();
+    public Color getColorFrente() {
+        return attr.getColorFrente();
     }
 
     @Override
-    public void setColor(Color color) {
-        attr.setColor(color);
+    public void setColorFrente(Color color) {
+        attr.setColorFrente(color);
+    }
+
+    @Override
+    public Color getColorFondo() {
+        return attr.getColorFondo();
+    }
+
+    @Override
+    public void setColorFondo(Color color) {
+        attr.setColorFondo(color);
     }
 
     @Override
@@ -200,5 +214,25 @@ public class Rectangulo2D extends java.awt.geom.Rectangle2D.Double
     @Override
     public void setStrokeWidth(float w) {
         attr.setStrokeWidth(w);
+    }
+
+    @Override
+    public void setGradiente(boolean gradiente) {
+        attr.setGradiente(gradiente);
+    }
+
+    @Override
+    public boolean isGradiente() {
+        return attr.isGradiente();
+    }
+
+    @Override
+    public void setConfigGradiente(int tipo) {
+        attr.setConfigGradiente(tipo, this);
+    }
+
+    @Override
+    public int getTipoGradiente() {
+        return attr.getTipoGrad();
     }
 }

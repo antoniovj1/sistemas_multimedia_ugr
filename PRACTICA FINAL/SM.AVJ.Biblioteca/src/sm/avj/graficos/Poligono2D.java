@@ -17,7 +17,7 @@ import java.awt.geom.Point2D;
  * @author antonio
  */
 public final class Poligono2D extends Polygon
-        implements MiShape {
+        implements miShape {
 
     Atributos attr = new Atributos();
 
@@ -71,6 +71,9 @@ public final class Poligono2D extends Polygon
         if (isRelleno()) {
             g2d.fill(this);
         }
+        if (attr.isGradiente()) {
+            attr.updateGradiente(this);
+        }
 
         g2d.draw(this);
     }
@@ -106,13 +109,23 @@ public final class Poligono2D extends Polygon
     }
 
     @Override
-    public Color getColor() {
-        return attr.getColor();
+    public Color getColorFrente() {
+        return attr.getColorFrente();
     }
 
     @Override
-    public void setColor(Color color) {
-        attr.setColor(color);
+    public void setColorFrente(Color color) {
+        attr.setColorFrente(color);
+    }
+
+    @Override
+    public Color getColorFondo() {
+        return attr.getColorFondo();
+    }
+
+    @Override
+    public void setColorFondo(Color color) {
+        attr.setColorFondo(color);
     }
 
     @Override
@@ -148,5 +161,25 @@ public final class Poligono2D extends Polygon
     @Override
     public void setStrokeWidth(float w) {
         attr.setStrokeWidth(w);
+    }
+
+    @Override
+    public void setGradiente(boolean gradiente) {
+        attr.setGradiente(gradiente);
+    }
+
+    @Override
+    public boolean isGradiente() {
+        return attr.isGradiente();
+    }
+
+    @Override
+    public void setConfigGradiente(int tipo) {
+        attr.setConfigGradiente(tipo, this);
+    }
+
+    @Override
+    public int getTipoGradiente() {
+        return attr.getTipoGrad();
     }
 }

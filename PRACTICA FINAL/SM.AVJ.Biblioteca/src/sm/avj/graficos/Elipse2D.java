@@ -16,7 +16,7 @@ import java.awt.geom.Point2D;
  * @author antonio
  */
 public class Elipse2D extends java.awt.geom.Ellipse2D.Double
-        implements MiShape {
+        implements miShape {
 
     Atributos attr = new Atributos();
 
@@ -61,7 +61,7 @@ public class Elipse2D extends java.awt.geom.Ellipse2D.Double
     }
 
     /**
-     * Este metodo establece los dos puntos que forman un MiShape.
+     * Este metodo establece los dos puntos que forman un miShape.
      *
      * @param p1
      * @param p2
@@ -106,6 +106,10 @@ public class Elipse2D extends java.awt.geom.Ellipse2D.Double
             g2d.fill(this);
         }
 
+        if (attr.isGradiente()) {
+            attr.updateGradiente(this);
+        }
+
         g2d.draw(this);
     }
 
@@ -140,13 +144,23 @@ public class Elipse2D extends java.awt.geom.Ellipse2D.Double
     }
 
     @Override
-    public Color getColor() {
-        return attr.getColor();
+    public Color getColorFrente() {
+        return attr.getColorFrente();
     }
 
     @Override
-    public void setColor(Color color) {
-        attr.setColor(color);
+    public void setColorFrente(Color color) {
+        attr.setColorFrente(color);
+    }
+
+    @Override
+    public Color getColorFondo() {
+        return attr.getColorFondo();
+    }
+
+    @Override
+    public void setColorFondo(Color color) {
+        attr.setColorFondo(color);
     }
 
     @Override
@@ -184,4 +198,23 @@ public class Elipse2D extends java.awt.geom.Ellipse2D.Double
         attr.setStrokeWidth(w);
     }
 
+    @Override
+    public void setGradiente(boolean gradiente) {
+        attr.setGradiente(gradiente);
+    }
+
+    @Override
+    public boolean isGradiente() {
+        return attr.isGradiente();
+    }
+
+    @Override
+    public void setConfigGradiente(int tipo) {
+        attr.setConfigGradiente(tipo,this);
+    }
+
+    @Override
+    public int getTipoGradiente(){
+        return attr.getTipoGrad();
+    }
 }

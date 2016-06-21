@@ -15,31 +15,31 @@ import java.awt.geom.Point2D;
  *
  * @author antonio
  */
-public interface MiShape extends java.awt.Shape {
+public interface miShape extends java.awt.Shape {
 
     /**
-     * Este metodo establece el primer punto de la figura MiShape.
+     * Este metodo establece el primer punto de la figura miShape.
      *
      * @param p
      */
     void setPointIni(Point2D p);
 
     /**
-     * Este metodo establece el segundo punto de la figura MiShape.
+     * Este metodo establece el segundo punto de la figura miShape.
      *
      * @param p
      */
     void setPointFin(Point2D p);
 
     /**
-     * Este metodo devuelve el primer punto de la figura MiShape.
+     * Este metodo devuelve el primer punto de la figura miShape.
      *
      * @return
      */
     Point2D getPointIni(); //Preguntar getBounds2D....
 
     /**
-     * Este metodo devuelve el primer punto de la figura MiShape.
+     * Este metodo devuelve el primer punto de la figura miShape.
      *
      * @return
      */
@@ -62,16 +62,20 @@ public interface MiShape extends java.awt.Shape {
      */
     void setLocation(Point2D pos);
 
-    Color getColor();
+    Color getColorFrente();
 
-    void setColor(Color color);
+    void setColorFrente(Color color);
+
+    Color getColorFondo();
+
+    void setColorFondo(Color color);
 
     Stroke getStroke();
 
     void setStroke(Stroke stroke);
-    
-    void setStrokeDash(float [] dash);
-    
+
+    void setStrokeDash(float[] dash);
+
     void setStrokeWidth(float w);
 
     public boolean isAlisado();
@@ -81,15 +85,23 @@ public interface MiShape extends java.awt.Shape {
     public boolean isTransparencia();
 
     public void setTransparencia(boolean transparencia);
-    
+
     public void setTransparenciaValue(float val);
-    
+
     public float getTransparenciaVlaue();
-    
+
     public boolean isRelleno();
 
     public void setRelleno(boolean relleno);
 
+    public void setGradiente(boolean gradiente);
+
+    public boolean isGradiente();
+
+    public void setConfigGradiente(int tipo);
+
+    public int getTipoGradiente();
+    
     void paint(Graphics2D g2d);
 
 }

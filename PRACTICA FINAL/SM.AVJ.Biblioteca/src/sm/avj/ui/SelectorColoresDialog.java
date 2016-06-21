@@ -15,6 +15,8 @@ import java.awt.Frame;
 public class SelectorColoresDialog extends javax.swing.JDialog {
 
     boolean seleccionado;
+    Color colorFrente = Color.LIGHT_GRAY;
+    Color colorFondo = Color.LIGHT_GRAY;
 
     /**
      * Creates new form SelectorColoresDialog
@@ -36,6 +38,8 @@ public class SelectorColoresDialog extends javax.swing.JDialog {
         panelColores = new javax.swing.JPanel();
         selectorColores = new javax.swing.JColorChooser();
         panelBotones = new javax.swing.JPanel();
+        botonColorFrente = new javax.swing.JButton();
+        botonColorFondo = new javax.swing.JButton();
         botonCancelar = new javax.swing.JButton();
         botonSeleccionar = new javax.swing.JButton();
 
@@ -49,6 +53,22 @@ public class SelectorColoresDialog extends javax.swing.JDialog {
 
         panelBotones.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         panelBotones.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 35, 5));
+
+        botonColorFrente.setText("Color Frente");
+        botonColorFrente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonColorFrenteActionPerformed(evt);
+            }
+        });
+        panelBotones.add(botonColorFrente);
+
+        botonColorFondo.setText("Color Fondo");
+        botonColorFondo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonColorFondoActionPerformed(evt);
+            }
+        });
+        panelBotones.add(botonColorFondo);
 
         botonCancelar.setText("Cancelar");
         botonCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -81,6 +101,16 @@ public class SelectorColoresDialog extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_botonCancelarActionPerformed
 
+    private void botonColorFrenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonColorFrenteActionPerformed
+        colorFrente = this.selectorColores.getColor();
+        this.botonColorFrente.setBackground(colorFrente);
+    }//GEN-LAST:event_botonColorFrenteActionPerformed
+
+    private void botonColorFondoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonColorFondoActionPerformed
+        colorFondo = this.selectorColores.getColor();
+        this.botonColorFondo.setBackground(colorFondo);
+    }//GEN-LAST:event_botonColorFondoActionPerformed
+
     public boolean isSeleccionado() {
         return seleccionado;
     }
@@ -89,13 +119,22 @@ public class SelectorColoresDialog extends javax.swing.JDialog {
         this.seleccionado = seleccionado;
     }
 
-    
-    public Color getColor() {
-        return this.selectorColores.getColor();
+    public Color getColorFondo() {
+        return colorFondo;
     }
-    
-    public void setColor(Color c) {
-        this.selectorColores.setColor(c);
+
+    public void setColorFondo(Color colorFondo) {
+        this.colorFondo = colorFondo;
+        this.botonColorFondo.setBackground(colorFondo);
+    }
+
+    public Color getColorFrente() {
+        return colorFrente;
+    }
+
+    public void setColorFrente(Color c) {
+        this.colorFrente = c;
+        this.botonColorFrente.setBackground(colorFrente);
     }
 
     /**
@@ -142,6 +181,8 @@ public class SelectorColoresDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonCancelar;
+    private javax.swing.JButton botonColorFondo;
+    private javax.swing.JButton botonColorFrente;
     private javax.swing.JButton botonSeleccionar;
     private javax.swing.JPanel panelBotones;
     private javax.swing.JPanel panelColores;
