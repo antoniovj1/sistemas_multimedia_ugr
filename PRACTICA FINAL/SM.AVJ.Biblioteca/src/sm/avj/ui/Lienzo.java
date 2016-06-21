@@ -25,6 +25,7 @@ import sm.avj.graficos.CurvaQ2D;
 import sm.avj.graficos.Forma;
 import sm.avj.graficos.Rectangulo2D;
 import sm.avj.graficos.MiShape;
+import sm.avj.graficos.Poligono2D;
 
 /**
  *
@@ -67,7 +68,7 @@ public class Lienzo extends javax.swing.JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         if (clip != null) {
-            g2d.clip(clip);
+            clip.paint(g2d);
         }
 
         AlphaComposite comp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
@@ -155,7 +156,9 @@ public class Lienzo extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
-        puntoClick = evt.getPoint();
+        if (curvaq_empezada == false) {
+            puntoClick = evt.getPoint();
+        }
         puntoActual = puntoClick;
 
         //Aseguro que si no estoy pintando una curva o un poligono sus variables no interfieren.
@@ -174,7 +177,7 @@ public class Lienzo extends javax.swing.JPanel {
             sh = this.getSelectedSape(puntoClick);
 
             if (sh != null) {
-                boundigBox.setRectangulo(sh.getBounds2D());
+                boundigBox.setRectangulo(sh.getBounds());
             }
 
         } else if (poligono_empezado == false && curvaq_empezada == false) {
@@ -207,26 +210,19 @@ public class Lienzo extends javax.swing.JPanel {
                 sh.setLocation(p);
 
                 if (sh != null) {
-                    boundigBox.setRectangulo(sh.getBounds2D());
+                    boundigBox.setRectangulo(sh.getBounds());
                 }
 
                 puntoClick = puntoActual;
 
             } else if (forma != Forma.POLIGONO && curvaq_ptc == false) {
-                sh.setPointFin(puntoActual);
+                sh.updateShape(puntoClick, puntoActual);
             } else if (forma == Forma.CURVAQ && curvaq_empezada && curvaq_ptc) {
                 ((CurvaQ2D) sh).setPointCtrl(puntoActual);
             }
         }
         repaint();
     }//GEN-LAST:event_formMouseDragged
-
-    // Creo que no es necesario... PREGUNTAR
-    private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
-        if (forma != Forma.POLIGONO) {
-            this.formMouseDragged(evt);
-        }
-    }//GEN-LAST:event_formMouseReleased
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
         if (evt.getClickCount() == 2) {
@@ -237,19 +233,25 @@ public class Lienzo extends javax.swing.JPanel {
                 curvaq_empezada = false;
                 curvaq_ptc = false;
             }
-
+            repaint();
         } else if (editar == false) {
-            if (forma != Forma.POLIGONO) {
-                this.formMouseDragged(evt);
+            if (sh instanceof Poligono2D) {
+                ((Poligono2D) sh).addPoint(puntoClick);
             } else {
-                sh.setPointFin(puntoClick);
-                repaint();
+                this.formMouseDragged(evt);
             }
+
+            repaint();
         } else if (evt.getButton() == MouseEvent.BUTTON2 && sh != null) {
             moveFront(sh);
         }
-
+        repaint();
     }//GEN-LAST:event_formMouseClicked
+
+    private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
+        // curvaq_ptc = true;
+        //  sh.updateShape(puntoClick, evt.getPoint());
+    }//GEN-LAST:event_formMouseReleased
 
     /* GETTERS y SETTERS */
     public Forma getForma() {

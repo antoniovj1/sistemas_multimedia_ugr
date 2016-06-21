@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sm.avj.graficos;
 
 import java.awt.AlphaComposite;
@@ -13,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  *
@@ -178,19 +174,19 @@ public class Atributos {
 
     
     private void calcularPuntosGradiente(int tipo, MiShape s) {
-        Rectangulo2D rect = new Rectangulo2D(s.getBounds2D());
+        Rectangle2D rect = s.getBounds();
         switch (tipo) {
             case 1: // Horizontal
                 p1 = new Point2D.Double(rect.getX(), rect.getY());
-                p2 = new Point2D.Double(rect.getX() + rect.width, rect.getY());
+                p2 = new Point2D.Double(rect.getX() + rect.getWidth(), rect.getY());
                 break;
             case 2: // Vertical
                 p1 = new Point2D.Double(rect.getX(), rect.getY());
-                p2 = new Point2D.Double(rect.getX(), rect.getY() + rect.height);
+                p2 = new Point2D.Double(rect.getX(), rect.getY() + rect.getHeight());
                 break;
             case 3: // Diagonal
                 p1 = new Point2D.Double(rect.getX(), rect.getY());
-                p2 = new Point2D.Double(rect.getX() + rect.width, rect.getY() + rect.height);
+                p2 = new Point2D.Double(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight());
                 break;
         }
     }

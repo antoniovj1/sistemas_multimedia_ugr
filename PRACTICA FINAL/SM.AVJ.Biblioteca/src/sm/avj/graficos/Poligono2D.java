@@ -1,53 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sm.avj.graficos;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
-import java.awt.Stroke;
 import java.awt.geom.Point2D;
 
 /**
  *
  * @author antonio
  */
-public final class Poligono2D extends Polygon
-        implements MiShape {
+public final class Poligono2D extends MiShape {
 
-    Atributos attr = new Atributos();
 
     public Poligono2D() {
-        super();
+        geometria = new Polygon();
     }
 
     public Poligono2D(Point2D p) {
-        super();
+        geometria = new Polygon();
         this.addPoint(p);
     }
 
     public void addPoint(Point2D p) {
-        this.addPoint((int) p.getX(), (int) p.getY());
-    }
-
-    @Override
-    public void setPointIni(Point2D p) {
-        this.addPoint(p);
-    }
-
-    @Override
-    public void setPointFin(Point2D p) {
-        this.addPoint(p);
-    }
-
-    @Override
-    public Point2D getPointIni() {
-        Point2D p = new Point2D.Double(this.xpoints[0], this.ypoints[0]);
-        return p;
+        ((Polygon)geometria).addPoint((int) p.getX(), (int) p.getY());
     }
 
     @Override
@@ -55,131 +28,21 @@ public final class Poligono2D extends Polygon
      * @TODO Preguntar por invalidate
      */
     public void setLocation(Point2D pos) {
-        //this.translate((int)pos.getX(),(int)pos.getY() );
-        for (int i = 0; i < this.npoints; i++) {
-            this.xpoints[i] = (int) (this.xpoints[i] + pos.getX());
-            this.ypoints[i] = (int) (this.ypoints[i] + pos.getY());
+        //((Polygon)geometria).translate((int)pos.getX(),(int)pos.getY() );
+        for (int i = 0; i < ((Polygon)geometria).npoints; i++) {
+            ((Polygon)geometria).xpoints[i] = (int) (((Polygon)geometria).xpoints[i] + pos.getX());
+            ((Polygon)geometria).ypoints[i] = (int) (((Polygon)geometria).ypoints[i] + pos.getY());
         }
-        this.invalidate();
+        ((Polygon)geometria).invalidate();
     }
 
     @Override
-    public void paint(Graphics2D g2d) {
-
-        attr.conf(g2d);
-
-        if (isRelleno()) {
-            g2d.fill(this);
-        }
-        if (attr.isGradiente()) {
-            attr.updateGradiente(this);
-        }
-
-        g2d.draw(this);
+    public boolean contains(Point2D p) {
+        return ((Polygon)geometria).contains(p);
     }
 
     @Override
-    public boolean isAlisado() {
-        return attr.isAlisado();
-    }
-
-    @Override
-    public void setAlisado(boolean alisado) {
-        attr.setAlisado(alisado);
-    }
-
-    @Override
-    public boolean isTransparencia() {
-        return attr.isTransparencia();
-    }
-
-    @Override
-    public void setTransparencia(boolean transparencia) {
-        attr.setTransparencia(transparencia);
-    }
-
-    @Override
-    public boolean isRelleno() {
-        return attr.isRelleno();
-    }
-
-    @Override
-    public void setRelleno(boolean relleno) {
-        attr.setRelleno(relleno);
-    }
-
-    @Override
-    public Color getColorFrente() {
-        return attr.getColorFrente();
-    }
-
-    @Override
-    public void setColorFrente(Color color) {
-        attr.setColorFrente(color);
-    }
-
-    @Override
-    public Color getColorFondo() {
-        return attr.getColorFondo();
-    }
-
-    @Override
-    public void setColorFondo(Color color) {
-        attr.setColorFondo(color);
-    }
-
-    @Override
-    public Stroke getStroke() {
-        return attr.getStroke();
-    }
-
-    @Override
-    public void setStroke(Stroke stroke) {
-        attr.setStroke(stroke);
-    }
-
-    @Override
-    public Point2D getPointFin() {
-        return new Point2D.Double(this.xpoints[npoints - 1], this.ypoints[npoints - 1]);
-    }
-
-    @Override
-    public void setTransparenciaValue(float val) {
-        attr.setTransparenciaValue(val);
-    }
-
-    @Override
-    public float getTransparenciaVlaue() {
-        return attr.getTrnaspareciaValue();
-    }
-
-    @Override
-    public void setStrokeDash(float[] dash) {
-        attr.setStrokeDash(dash);
-    }
-
-    @Override
-    public void setStrokeWidth(float w) {
-        attr.setStrokeWidth(w);
-    }
-
-    @Override
-    public void setGradiente(boolean gradiente) {
-        attr.setGradiente(gradiente);
-    }
-
-    @Override
-    public boolean isGradiente() {
-        return attr.isGradiente();
-    }
-
-    @Override
-    public void setConfigGradiente(int tipo) {
-        attr.setConfigGradiente(tipo, this);
-    }
-
-    @Override
-    public int getTipoGradiente() {
-        return attr.getTipoGrad();
+    public void updateShape(Point2D p1, Point2D p2) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

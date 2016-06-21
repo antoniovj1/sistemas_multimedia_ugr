@@ -31,15 +31,11 @@ public class Lienzo2DImagen extends Lienzo {
         if (clip != null) {
             Graphics2D g2d = (Graphics2D) g;
             final float dash[] = {5.0f};
-            final BasicStroke borde
-                    = new BasicStroke(1.5f,
-                            BasicStroke.CAP_BUTT,
-                            BasicStroke.JOIN_MITER,
-                            5.0f, dash, 0.0f);
 
-            g2d.setStroke(borde);
+            clip.setStrokeDash(dash);
+            clip.setStrokeWidth(1.5f);
           
-            g2d.draw(this.clip);
+            clip.paint(g2d);
         }
     }
 

@@ -2,6 +2,18 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/home/antonio/GitHub/sistemas_multimedia_ugr/PRACTICA%20FINAL/SM.AVJ.Biblioteca/src/sm/avj/graficos/MiShape.java</file>
+            <file>file:/home/antonio/GitHub/sistemas_multimedia_ugr/PRACTICA%20FINAL/SM.AVJ.Biblioteca/src/sm/avj/ui/Lienzo.java</file>
+            <file>file:/home/antonio/GitHub/sistemas_multimedia_ugr/PRACTICA%20FINAL/SM.AVJ.Biblioteca/src/sm/avj/graficos/Atributos.java</file>
+            <file>file:/home/antonio/GitHub/sistemas_multimedia_ugr/PRACTICA%20FINAL/SM.AVJ.Biblioteca/src/sm/avj/graficos/CurvaQ2D.java</file>
+            <file>file:/home/antonio/GitHub/sistemas_multimedia_ugr/PRACTICA%20FINAL/SM.AVJ.Biblioteca/src/sm/avj/graficos/Rectangulo2D.java</file>
+            <file>file:/home/antonio/GitHub/sistemas_multimedia_ugr/PRACTICA%20FINAL/SM.AVJ.Biblioteca/src/sm/avj/ui/SelectorColoresDialog.java</file>
+            <file>file:/home/antonio/GitHub/sistemas_multimedia_ugr/PRACTICA%20FINAL/SM.AVJ.Biblioteca/src/sm/avj/graficos/Elipse2D.java</file>
+            <file>file:/home/antonio/GitHub/sistemas_multimedia_ugr/PRACTICA%20FINAL/SM.AVJ.Biblioteca/src/sm/avj/graficos/Linea2D.java</file>
+            <file>file:/home/antonio/GitHub/sistemas_multimedia_ugr/PRACTICA%20FINAL/SM.AVJ.Biblioteca/src/sm/avj/ui/Lienzo2DImagen.java</file>
+            <file>file:/home/antonio/GitHub/sistemas_multimedia_ugr/PRACTICA%20FINAL/SM.AVJ.Biblioteca/src/sm/avj/graficos/Poligono2D.java</file>
+            <file>file:/home/antonio/GitHub/sistemas_multimedia_ugr/PRACTICA%20FINAL/SM.AVJ.Biblioteca/src/sm/avj/graficos/Forma.java</file>
+        </group>
     </open-files>
 </project-private>
