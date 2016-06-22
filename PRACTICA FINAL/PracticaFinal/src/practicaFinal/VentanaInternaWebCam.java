@@ -46,7 +46,7 @@ public class VentanaInternaWebCam extends javax.swing.JInternalFrame {
 
     private void init() {
         webcam = Webcam.getDefault();
-
+        
         if (webcam != null) {
             WebcamPicker picker = new WebcamPicker();
             webcam = picker.getSelectedWebcam();

@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package practicaFinal;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.HeadlessException;
 import java.awt.Point;
 import java.awt.color.ColorSpace;
 import java.awt.color.ICC_ColorSpace;
@@ -24,12 +20,9 @@ import java.awt.image.RescaleOp;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.media.MediaLocator;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.swing.Icon;
@@ -41,7 +34,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import sm.avj.imagen.SepiaOp;
 import sm.avj.imagen.UmbralizacionOp;
 import sm.avj.ui.SelectorColoresDialog;
-import sm.avj.ui.StrokeCellRenderer;
+import sm.avj.ui.ColorCellRenderer;
 import sm.avj.ui.ResizeDialog;
 import sm.image.BlendOp;
 import sm.image.KernelProducer;
@@ -58,8 +51,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     BufferedImage imagenUmbralizadaAux = null;
     BufferedImage imagenBendAux1 = null;
     BufferedImage imagenBendAux2 = null;
-    //float alfa_bend = 0.5f;
-    // VentanaInternaLienzo bending = null;
+
     VentanaBlending vb = null;
 
     final float dash1[] = {10.0f};
@@ -324,7 +316,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         barraHerramientas.add(spinnerGrosor);
 
-        menuStroke.setRenderer(new StrokeCellRenderer());
         menuStroke.setSelectedIndex(3);
         menuStroke.setMaximumRowCount(4);
         menuStroke.setToolTipText("Tipo de línea");
@@ -884,7 +875,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }
 
-    private boolean pertenece(String s, String v[]) {
+    private boolean vectorContieneString(String s, String v[]) {
         for (String st : v) {
             if (st.equals(s)) {
                 return true;
@@ -918,7 +909,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             String ext = getFileExtension(f);
 
             try {
-                if (pertenece(ext, ImageIO.getWriterFormatNames())) {
+                if (vectorContieneString(ext, ImageIO.getWriterFormatNames())) {
                     BufferedImage img = null;
                     try {
                         img = ImageIO.read(f);
@@ -929,10 +920,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     vi.getLienzo().setImage(img);
                     configInternalFrame(vi, f);
 
-                } else if (pertenece(ext, extensionesAu)) {
+                } else if (vectorContieneString(ext, extensionesAu)) {
                     VentanaInternaReproductor vi = new VentanaInternaReproductor(f);
                     configInternalFrame(vi, f);
-                } else if (pertenece(ext, extensionesVi)) {
+                } else if (vectorContieneString(ext, extensionesVi)) {
                     VentanaInternaVideo vi = new VentanaInternaVideo(f);
                     configInternalFrame(vi, f);
                 } else {
@@ -958,44 +949,35 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ji.setVisible(true);
     }
 
-    /**
-     * @TODO Preguntar a Jesus.
-     * @param evt
-     */
 
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
-        VentanaInternaLienzo vi = testVentanaInterna();
+        JInternalFrame vi = escritorio.getSelectedFrame();
         if (vi != null) {
-            JFileChooser dlg = new JFileChooser();
+            if (vi instanceof VentanaBlending || vi instanceof VentanaInternaLienzo) {
+                JFileChooser dlg = new JFileChooser();
 
-            String extensiones[];
-            extensiones = ImageIO.getWriterFileSuffixes();
+                dlg.addChoosableFileFilter(new FileNameExtensionFilter("Imagenes " + Arrays.toString(ImageIO.getWriterFileSuffixes()), ImageIO.getWriterFormatNames()));
 
-            Set<String> extSinRep = new LinkedHashSet<>();
-            for (String extension : extensiones) {
-                extSinRep.add(extension.toLowerCase());
-            }
+                int resp = dlg.showSaveDialog(this);
 
-            for (String extension : extSinRep) {
-                dlg.addChoosableFileFilter(new FileNameExtensionFilter(extension, extension));
-            }
+                if (resp == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        BufferedImage img = ((VentanaInternaLienzo) vi).getLienzo().getImage(true);
+                        if (img != null) {
+                            File f = dlg.getSelectedFile();
+                            String ext = f.getName().substring(f.getName().lastIndexOf(".") + 1);
 
-            int resp = dlg.showSaveDialog(this);
-            if (resp == JFileChooser.APPROVE_OPTION) {
-
-                try {
-                    BufferedImage img = vi.getLienzo().getImage(true);
-                    if (img != null) {
-                        File f = dlg.getSelectedFile();
-                        String ext = dlg.getFileFilter().getDescription();
-
-                        ImageIO.write(img, ext, f);
-                        vi.setTitle(f.getName());
+                            if (vectorContieneString(ext, ImageIO.getWriterFormatNames())) {
+                                ImageIO.write(img, ext, f);
+                                vi.setTitle(f.getName());
+                            } else {
+                                JOptionPane.showMessageDialog(this, "Extensión no válida", "Error", 0);
+                            }
+                        }
+                    } catch (IOException | HeadlessException ex) {
+                        JOptionPane.showMessageDialog(this, "Error al guardar.", "Error", 0);
                     }
-                } catch (Exception ex) {
-                    System.err.println("Error al guardar la imagen");
                 }
-
             }
         }
     }//GEN-LAST:event_botonGuardarActionPerformed
@@ -1070,9 +1052,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             } else {
                 rop = new RescaleOp(1.0f, this.sliderBrillo.getValue(), null);
             }
-            /**
-             * @TODO ¿Más eficiente creando la variable fuera?
-             */
+
             try {
                 BufferedImage imgOut = rop.filter(imagenAux, null);
                 vi.getLienzo().setImage(imgOut);
@@ -1097,10 +1077,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_comboBoxFiltrosActionPerformed
 
-    /**
-     * @TODO ¿Es buena idea?
-     *
-     */
     private LookupOp crearLookupOp(int tipo) {
         LookupTable lt = LookupTableProducer.createLookupTable(tipo);
         LookupOp lop = new LookupOp(lt, null);
@@ -1115,7 +1091,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 try {
 
                     // Imagen origen y destino iguales
-                    crearLookupOp(LookupTableProducer.TYPE_SFUNCION).filter(imgSource, imgSource);
+                    this.crearLookupOp(LookupTableProducer.TYPE_SFUNCION).filter(imgSource, imgSource);
                     vi.repaint();
 
                 } catch (Exception e) {
@@ -1131,7 +1107,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             BufferedImage imgSource = vi.getLienzo().getImage();
             if (imgSource != null) {
                 try {
-                    crearLookupOp(LookupTableProducer.TYPE_LOGARITHM).filter(imgSource, imgSource);
+                    this.crearLookupOp(LookupTableProducer.TYPE_LOGARITHM).filter(imgSource, imgSource);
                     vi.repaint();
                 } catch (Exception e) {
                     System.err.println(e.getLocalizedMessage());
@@ -1146,7 +1122,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             BufferedImage imgSource = vi.getLienzo().getImage();
             if (imgSource != null) {
                 try {
-                    crearLookupOp(LookupTableProducer.TYPE_POWER).filter(imgSource, imgSource);
+                    this.crearLookupOp(LookupTableProducer.TYPE_POWER).filter(imgSource, imgSource);
                     vi.repaint();
                 } catch (Exception e) {
                     System.err.println(e.getLocalizedMessage());
@@ -1172,12 +1148,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_botonSenoActionPerformed
 
-    /**
-     * @TODO Invesitgar el funcionamiento....
-     * @param imagen
-     * @param grados
-     * @return
-     */
+
     private BufferedImage rotarImagen(BufferedImage imagen, int grados) {
         double r = Math.toRadians(grados);
         double cos = Math.abs(Math.cos(r));
@@ -1294,9 +1265,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 try {
                     SepiaOp so = new SepiaOp();
                     so.filter(imgSource, imgSource);
-                    vi.repaint();
+                    repaint();
                 } catch (Exception e) {
-                    System.err.println(e.getLocalizedMessage());
+                    JOptionPane.showMessageDialog(this, "No se pudo realizar la operación", "Error", 0);
                 }
             }
         }
@@ -1318,7 +1289,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         this.escritorio.add(vi);
                         vi.setVisible(true);
                     } catch (IllegalArgumentException e) {
-                        System.err.println("Error: " + e.getLocalizedMessage());
+                        JOptionPane.showMessageDialog(this, "No se pudo realizar la operación", "Error", 0);
                     }
                 }
             }
@@ -1341,7 +1312,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         this.escritorio.add(vi);
                         vi.setVisible(true);
                     } catch (IllegalArgumentException e) {
-                        System.err.println("Error: " + e.getLocalizedMessage());
+                        JOptionPane.showMessageDialog(this, "No se pudo realizar la operación", "Error", 0);
                     }
                 }
             }
@@ -1377,7 +1348,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                             this.escritorio.add(vb);
                             vb.setVisible(true);
                         } catch (IllegalArgumentException e) {
-                            System.err.println("Error: " + e.getLocalizedMessage());
+                            JOptionPane.showMessageDialog(this, "No se pudo realizar la operación", "Error", 0);
                         }
                     }
                 }
@@ -1528,7 +1499,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             if (imgSource != null) {
                 try {
                     // Imagen origen y destino iguales
-                    crearLookupOp(LookupTableProducer.TYPE_NEGATIVE).filter(imgSource, imgSource);
+                    this.crearLookupOp(LookupTableProducer.TYPE_NEGATIVE).filter(imgSource, imgSource);
                     vi.repaint();
 
                 } catch (Exception e) {
@@ -1553,7 +1524,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     vi.repaint();
 
                 } catch (Exception e) {
-                    System.err.println(e.getLocalizedMessage());
+                    JOptionPane.showMessageDialog(this, "No se pudo realizar la operación", "Error", 0);
                 }
             }
         }
@@ -1568,7 +1539,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 vi.getLienzo().setImage(imgOut);
                 repaint();
             } catch (Exception e) {
-                System.err.println(e.getLocalizedMessage());
+                JOptionPane.showMessageDialog(this, "No se pudo realizar la operación", "Error", 0);
             }
         }
     }//GEN-LAST:event_sliderUmbralStateChanged
@@ -1651,26 +1622,26 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         VentanaInternaLienzo vi = testVentanaInterna();
         if (vi != null) {
 
-            int item = this.opcionesRelleno.getSelectedIndex();
+            String item = this.opcionesRelleno.getSelectedItem().toString();
 
             switch (item) {
-                case 0:
+                case "Sin Relleno":
                     vi.getLienzo().setRelleno(false);
                     vi.getLienzo().setGradiente(false);
                     break;
-                case 1:
+                case "Relleno":
                     vi.getLienzo().setRelleno(true);
                     vi.getLienzo().setGradiente(false);
                     break;
-                case 2:
+                case "Gradiente Vertical":
                     vi.getLienzo().setRelleno(true);
                     vi.getLienzo().setConfigGradiente(2);
                     break;
-                case 3:
+                case "Gradiente Horizontal":
                     vi.getLienzo().setRelleno(true);
                     vi.getLienzo().setConfigGradiente(1);
                     break;
-                case 4:
+                case "Gradiente Diagonal":
                     vi.getLienzo().setRelleno(true);
                     vi.getLienzo().setConfigGradiente(3);
                     break;

@@ -5,16 +5,13 @@
  */
 package sm.avj.ui;
 
-import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -71,16 +68,10 @@ public class Lienzo extends javax.swing.JPanel {
             clip.paint(g2d);
         }
 
-        AlphaComposite comp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
-        RenderingHints antialiasing = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-
         for (MiShape s : vShape) {
             s.paint(g2d);
-
-            //Restauro el objeto g2d
-            g2d.setComposite(comp);
-            g2d.setRenderingHints(antialiasing);
         }
+
         if (boundigBox != null && editar) {
             boundigBox.paint(g2d);
         }
@@ -135,9 +126,6 @@ public class Lienzo extends javax.swing.JPanel {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 formMousePressed(evt);
             }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                formMouseReleased(evt);
-            }
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
             }
@@ -161,7 +149,8 @@ public class Lienzo extends javax.swing.JPanel {
         }
         puntoActual = puntoClick;
 
-        //Aseguro que si no estoy pintando una curva o un poligono sus variables no interfieren.
+        //Por si el usuario cambia de forma sin terminarla
+        //Me aseguro de que los booleanos de poligono y curva no interfieren
         if (forma != Forma.POLIGONO) {
             poligono_empezado = false;
         }
@@ -169,7 +158,7 @@ public class Lienzo extends javax.swing.JPanel {
             curvaq_empezada = curvaq_ptc = false;
         }
 
-        if (poligono_empezado == false && curvaq_empezada == false) {
+        if (!poligono_empezado && !curvaq_empezada) {
             sh = null;
         }
 
@@ -180,7 +169,7 @@ public class Lienzo extends javax.swing.JPanel {
                 boundigBox.setRectangulo(sh.getBounds());
             }
 
-        } else if (poligono_empezado == false && curvaq_empezada == false) {
+        } else if (!poligono_empezado && !curvaq_empezada) {
             try {
                 sh = createShape(puntoClick);
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | IllegalArgumentException | InvocationTargetException ex) {
@@ -208,14 +197,11 @@ public class Lienzo extends javax.swing.JPanel {
                 Point2D p = new Point2D.Double(puntoActual.getX() - puntoClick.getX(), puntoActual.getY() - puntoClick.getY());
 
                 sh.setLocation(p);
-
-                if (sh != null) {
-                    boundigBox.setRectangulo(sh.getBounds());
-                }
+                boundigBox.setRectangulo(sh.getBounds());
 
                 puntoClick = puntoActual;
 
-            } else if (forma != Forma.POLIGONO && curvaq_ptc == false) {
+            } else if (!curvaq_ptc) {
                 sh.updateShape(puntoClick, puntoActual);
             } else if (forma == Forma.CURVAQ && curvaq_empezada && curvaq_ptc) {
                 ((CurvaQ2D) sh).setPointCtrl(puntoActual);
@@ -227,31 +213,23 @@ public class Lienzo extends javax.swing.JPanel {
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
         if (evt.getClickCount() == 2) {
             poligono_empezado = false;
-            if (curvaq_empezada == true && curvaq_ptc == false) {
+            if (curvaq_empezada && !curvaq_ptc) {
                 curvaq_ptc = true;
             } else if (curvaq_empezada && curvaq_ptc) {
                 curvaq_empezada = false;
                 curvaq_ptc = false;
             }
-            repaint();
-        } else if (editar == false) {
+        } else if (!editar) {
             if (sh instanceof Poligono2D) {
                 ((Poligono2D) sh).addPoint(puntoClick);
             } else {
                 this.formMouseDragged(evt);
             }
-
-            repaint();
         } else if (evt.getButton() == MouseEvent.BUTTON2 && sh != null) {
             moveFront(sh);
         }
         repaint();
     }//GEN-LAST:event_formMouseClicked
-
-    private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
-        // curvaq_ptc = true;
-        //  sh.updateShape(puntoClick, evt.getPoint());
-    }//GEN-LAST:event_formMouseReleased
 
     /* GETTERS y SETTERS */
     public Forma getForma() {

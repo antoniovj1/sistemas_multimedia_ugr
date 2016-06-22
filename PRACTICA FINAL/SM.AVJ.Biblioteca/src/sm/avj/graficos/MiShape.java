@@ -16,7 +16,7 @@ public abstract class MiShape {
 
     Atributos attr = new Atributos();
     Shape geometria;
-    
+
     
     /**
      * Este metodo permite comprobar si un punto esta encima de una figura.
@@ -35,12 +35,12 @@ public abstract class MiShape {
      */
     public abstract void setLocation(Point2D pos);
 
-    public abstract void updateShape(Point2D p1 , Point2D p2);
-   
+    public abstract void updateShape(Point2D p1, Point2D p2);
+
     public Rectangle2D getBounds() {
         return geometria.getBounds2D();
     }
-    
+
     public void paint(Graphics2D g2d) {
 
         attr.conf(g2d);
@@ -55,7 +55,6 @@ public abstract class MiShape {
         g2d.draw(geometria);
     }
 
-    
     public boolean isAlisado() {
         return attr.isAlisado();
     }
@@ -72,7 +71,6 @@ public abstract class MiShape {
         attr.setTransparencia(transparencia);
     }
 
-    
     public boolean isRelleno() {
         return attr.isRelleno();
     }
@@ -85,7 +83,6 @@ public abstract class MiShape {
         return attr.getColorFrente();
     }
 
-    
     public void setColorFrente(Color color) {
         attr.setColorFrente(color);
     }
@@ -102,7 +99,6 @@ public abstract class MiShape {
         return attr.getStroke();
     }
 
-    
     public void setStroke(Stroke stroke) {
         attr.setStroke(stroke);
     }
@@ -110,7 +106,7 @@ public abstract class MiShape {
     public void setTransparenciaValue(float val) {
         attr.setTransparenciaValue(val);
     }
-    
+
     public float getTransparenciaVlaue() {
         return attr.getTrnaspareciaValue();
     }
@@ -131,7 +127,6 @@ public abstract class MiShape {
         return attr.isGradiente();
     }
 
-    
     public void setConfigGradiente(int tipo) {
         attr.setConfigGradiente(tipo, this);
     }

@@ -68,9 +68,8 @@ public class Rectangulo2D extends MiShape {
     @Override
     public void setLocation(Point2D pos) {
         Point2D esquina = new Point2D.Double(((Rectangle2D) geometria).getX(), ((Rectangle2D) geometria).getY());
-        // Muevo la figura añadiendo el punto calculado anteriormente 
-        //para evitar que se mueva desde la esquina.
         esquina.setLocation(esquina.getX() + pos.getX(), esquina.getY() + pos.getY());
+        
         ((Rectangle2D) geometria).setFrame(esquina, new Dimension((int) ((Rectangle2D) geometria).getWidth(), (int) ((Rectangle2D) geometria).getHeight()));
     }
 

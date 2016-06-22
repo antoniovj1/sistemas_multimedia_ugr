@@ -16,6 +16,10 @@ import java.awt.geom.Rectangle2D;
  */
 public class Atributos {
 
+    final int HORIZONTAL = 1;
+    final int VERTICAL = 2;
+    final int DIAGONAL = 3;
+
     Color colorFrente;
     Color colorFondo;
     Stroke stroke;
@@ -23,6 +27,12 @@ public class Atributos {
 
     AlphaComposite comp;
     RenderingHints antialiasing;
+
+    AlphaComposite comp_sin_tansparencia = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
+
+    RenderingHints antialiasing_sin_alisado = new RenderingHints(RenderingHints.KEY_ANTIALIASING,
+            RenderingHints.VALUE_ANTIALIAS_OFF);
+
     GradientPaint gradiente;
 
     boolean alisado;
@@ -55,10 +65,14 @@ public class Atributos {
 
         if (isTransparencia()) {
             g2d.setComposite(comp);
+        } else {
+            g2d.setComposite(comp_sin_tansparencia);
         }
 
         if (isAlisado()) {
             g2d.setRenderingHints(antialiasing);
+        } else {
+            g2d.setRenderingHints(antialiasing_sin_alisado);
         }
 
         if (isGradiente()) {
@@ -172,19 +186,18 @@ public class Atributos {
         return tipoGrad;
     }
 
-    
     private void calcularPuntosGradiente(int tipo, MiShape s) {
         Rectangle2D rect = s.getBounds();
         switch (tipo) {
-            case 1: // Horizontal
+            case HORIZONTAL: 
                 p1 = new Point2D.Double(rect.getX(), rect.getY());
                 p2 = new Point2D.Double(rect.getX() + rect.getWidth(), rect.getY());
                 break;
-            case 2: // Vertical
+            case VERTICAL: 
                 p1 = new Point2D.Double(rect.getX(), rect.getY());
                 p2 = new Point2D.Double(rect.getX(), rect.getY() + rect.getHeight());
                 break;
-            case 3: // Diagonal
+            case DIAGONAL: 
                 p1 = new Point2D.Double(rect.getX(), rect.getY());
                 p2 = new Point2D.Double(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight());
                 break;

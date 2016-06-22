@@ -22,16 +22,15 @@ public class SepiaOp extends BufferedImageOpAdapter {
     @Override
     public BufferedImage filter(BufferedImage src, BufferedImage dest) {
         if (src == null) {
-            throw new NullPointerException("src image is null");
+            throw new NullPointerException("src es null");
         }
         if (dest == null) {
             dest = createCompatibleDestImage(src, null);
         }
 
-
         WritableRaster raster = dest.getRaster();
-        
         BufferedImagePixelIterator.PixelData pixel;
+        
         for (BufferedImagePixelIterator it = new BufferedImagePixelIterator(src); it.hasNext();) {
             pixel = it.next();
 
@@ -43,9 +42,7 @@ public class SepiaOp extends BufferedImageOpAdapter {
             pixel.sample[1] = Math.min(255, ((int)( initRed * 0.349f + initGreen * 0.686f + initBlue * 0.168f)));
             pixel.sample[2] = Math.min(255, ((int)(initRed * 0.272f + initGreen * 0.534f + initBlue * 0.131f)));
 
-
             raster.setPixel(pixel.col, pixel.row, pixel.sample);
-
         }
         return dest;
     }

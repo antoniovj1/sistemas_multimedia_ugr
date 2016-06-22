@@ -1,15 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package practicaFinal;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import sm.avj.ui.Lienzo2DImagen;
 
@@ -36,14 +29,6 @@ public class VentanaInternaLienzo extends javax.swing.JInternalFrame {
         g.fillRect(0, 0, img.getWidth(), img.getHeight());
 
         lienzo.setImage(img);
-
-        this.getContentPane().addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent evt) {
-                    updateParent();     
-            }
-        });
-
     }
 
     public Lienzo2DImagen getLienzo() {
@@ -111,13 +96,12 @@ public class VentanaInternaLienzo extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void updateParent() {
-        if (lienzo.isFigSelected() && lienzo.isEditar()) {
+        if (lienzo.isFigSelected()) {
             if (lienzo.isRelleno() && !lienzo.isGradiente()) {
                 this.ventanaPadre.opcionesRelleno.setSelectedIndex(1);
             } else if (!lienzo.isRelleno()) {
                 this.ventanaPadre.opcionesRelleno.setSelectedIndex(0);
-            }
-            if (lienzo.isGradiente()) {
+            } else if (lienzo.isGradiente()) {
                 switch (lienzo.getTipoGradiente()) {
                     case 1:
                         this.ventanaPadre.opcionesRelleno.setSelectedIndex(3);
@@ -142,7 +126,7 @@ public class VentanaInternaLienzo extends javax.swing.JInternalFrame {
          * ¿ Siempre activados o solo activarlos al seleccionar una figura ?
          *
          */
-        boolean actv = (lienzo.isFigSelected() && lienzo.isEditar()) == true;
+        /* boolean actv = (lienzo.isFigSelected() && lienzo.isEditar()) == true;
 
         this.ventanaPadre.botonAlisar.setEnabled(actv);
         this.ventanaPadre.botonTransparencia.setEnabled(actv);
@@ -150,33 +134,31 @@ public class VentanaInternaLienzo extends javax.swing.JInternalFrame {
         this.ventanaPadre.menuColores.setEnabled(actv);
         this.ventanaPadre.sliderTransparencia.setVisible(actv);
         this.ventanaPadre.menuStroke.setEnabled(actv);
-        this.ventanaPadre.opcionesRelleno.setEnabled(actv);
-
-        switch (lienzo.getForma()) {
-            case PUNTO:
-                this.ventanaPadre.botonPunto.setSelected(true);
-                break;
-            case ELIPSE:
-                this.ventanaPadre.botonElipse.setSelected(true);
-                break;
-            case RECTANGULO:
-                this.ventanaPadre.botonRectangulo.setSelected(true);
-                break;
-            case LINEA:
-                this.ventanaPadre.botonLinea.setSelected(true);
-                break;
-            case POLIGONO:
-                this.ventanaPadre.botonPoligono.setSelected(true);
-                break;
-            case CURVAQ:
-                this.ventanaPadre.botonCurvaQ.setSelected(true);
-                break;
-        }
-
+        this.ventanaPadre.opcionesRelleno.setEnabled(actv);*/
         if (lienzo.isEditar()) {
             this.ventanaPadre.botonEditar.setSelected(true);
+        } else {
+            switch (lienzo.getForma()) {
+                case PUNTO:
+                    this.ventanaPadre.botonPunto.setSelected(true);
+                    break;
+                case ELIPSE:
+                    this.ventanaPadre.botonElipse.setSelected(true);
+                    break;
+                case RECTANGULO:
+                    this.ventanaPadre.botonRectangulo.setSelected(true);
+                    break;
+                case LINEA:
+                    this.ventanaPadre.botonLinea.setSelected(true);
+                    break;
+                case POLIGONO:
+                    this.ventanaPadre.botonPoligono.setSelected(true);
+                    break;
+                case CURVAQ:
+                    this.ventanaPadre.botonCurvaQ.setSelected(true);
+                    break;
+            }
         }
-
         if (lienzo.isTransparencia()) {
             this.ventanaPadre.sliderTransparencia.setVisible(true);
             this.ventanaPadre.sliderTransparencia.setValue((int) (lienzo.getTransparenciaValue() * 100));

@@ -25,16 +25,16 @@ public class UmbralizacionOp extends BufferedImageOpAdapter {
     @Override
     public BufferedImage filter(BufferedImage src, BufferedImage dest) {
         if (src == null) {
-            throw new NullPointerException("src image is null");
+            throw new NullPointerException("src es null");
         }
         if (dest == null) {
             dest = createCompatibleDestImage(src, null);
         }
 
         WritableRaster raster = dest.getRaster();
-
         int val;
         BufferedImagePixelIterator.PixelData pixel;
+        
         for (BufferedImagePixelIterator it = new BufferedImagePixelIterator(src); it.hasNext();) {
             pixel = it.next();
 
@@ -55,7 +55,6 @@ public class UmbralizacionOp extends BufferedImageOpAdapter {
             pixel.sample[2] = val;
 
             raster.setPixel(pixel.col, pixel.row, pixel.sample);
-
         }
         return dest;
     }

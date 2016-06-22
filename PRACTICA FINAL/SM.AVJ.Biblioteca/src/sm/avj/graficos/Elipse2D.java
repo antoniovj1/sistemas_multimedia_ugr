@@ -52,9 +52,8 @@ public class Elipse2D extends MiShape {
     @Override
     public void setLocation(Point2D pos) {
         Point2D esquina = new Point2D.Double(((Ellipse2D)geometria).getX(), ((Ellipse2D)geometria).getY());
-        // Muevo la figura añadiendo el punto calculado anteriormente 
-        //para evitar que se mueva desde la esquina.
         esquina.setLocation(esquina.getX() + pos.getX(), esquina.getY() + pos.getY());
+        
         ((Ellipse2D)geometria).setFrame(esquina, new Dimension((int) ((Ellipse2D)geometria).getWidth(), (int) ((Ellipse2D)geometria).getHeight()));
 
     }

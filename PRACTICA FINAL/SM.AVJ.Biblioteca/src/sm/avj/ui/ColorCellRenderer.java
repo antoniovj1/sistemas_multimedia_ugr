@@ -16,12 +16,12 @@ import javax.swing.ListCellRenderer;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
-class ColorCellRenderer implements ListCellRenderer {
+public class ColorCellRenderer implements ListCellRenderer {
 
     private final DefaultListCellRenderer defaultRenderer;
     private final static Dimension PREFERRED_SIZE = new Dimension(25, 25);
 
-    ColorCellRenderer() {
+    public ColorCellRenderer() {
         this.defaultRenderer = new DefaultListCellRenderer();
     }
 

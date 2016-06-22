@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package practicaFinal;
 
 import java.io.File;
@@ -24,6 +19,8 @@ public class VentanaInternaReproductor extends javax.swing.JInternalFrame {
     public VentanaInternaReproductor(File f) {
         initComponents();
         player = new SMClipPlayer(f);
+        this.botonStop.setVisible(false);
+
     }
 
     /**
@@ -70,6 +67,7 @@ public class VentanaInternaReproductor extends javax.swing.JInternalFrame {
                 botonPlayActionPerformed(evt);
             }
         });
+        panel.add(botonPlay);
 
         buttonGroup.add(botonStop);
         botonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/StopDisabled_48x48.png"))); // NOI18N
@@ -80,27 +78,7 @@ public class VentanaInternaReproductor extends javax.swing.JInternalFrame {
                 botonStopActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
-        panel.setLayout(panelLayout);
-        panelLayout.setHorizontalGroup(
-            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(botonPlay)
-                .addGap(22, 22, 22)
-                .addComponent(botonStop)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        panelLayout.setVerticalGroup(
-            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonStop)
-                    .addComponent(botonPlay))
-                .addContainerGap(16, Short.MAX_VALUE))
-        );
+        panel.add(botonStop);
 
         getContentPane().add(panel, java.awt.BorderLayout.CENTER);
 
@@ -112,6 +90,8 @@ public class VentanaInternaReproductor extends javax.swing.JInternalFrame {
             player.play();
             titulo_orig = this.getTitle();
             this.setTitle(titulo_orig + "(Repro...)");
+            this.botonStop.setVisible(true);
+            this.botonPlay.setVisible(false);
         }
     }//GEN-LAST:event_botonPlayActionPerformed
 
@@ -119,6 +99,8 @@ public class VentanaInternaReproductor extends javax.swing.JInternalFrame {
         if (player != null) {
             player.stop();
             this.setTitle(titulo_orig);
+            this.botonStop.setVisible(false);
+            this.botonPlay.setVisible(true);
         }
     }//GEN-LAST:event_botonStopActionPerformed
 

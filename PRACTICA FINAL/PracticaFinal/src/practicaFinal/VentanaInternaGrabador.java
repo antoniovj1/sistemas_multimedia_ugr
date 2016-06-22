@@ -25,6 +25,7 @@ public class VentanaInternaGrabador extends javax.swing.JInternalFrame {
     public VentanaInternaGrabador(File f) {
         initComponents();
         recorder = new SMSoundRecorder(f);
+        this.botonStop.setVisible(false);
     }
 
     /**
@@ -71,6 +72,7 @@ public class VentanaInternaGrabador extends javax.swing.JInternalFrame {
                 botonGrabarActionPerformed(evt);
             }
         });
+        jPanel1.add(botonGrabar);
 
         buttonGroup1.add(botonStop);
         botonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/StopDisabled_48x48.png"))); // NOI18N
@@ -81,27 +83,7 @@ public class VentanaInternaGrabador extends javax.swing.JInternalFrame {
                 botonStopActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(botonGrabar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addComponent(botonStop)
-                .addGap(24, 24, 24))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonGrabar)
-                    .addComponent(botonStop))
-                .addContainerGap(28, Short.MAX_VALUE))
-        );
+        jPanel1.add(botonStop);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -113,6 +95,8 @@ public class VentanaInternaGrabador extends javax.swing.JInternalFrame {
             recorder.record();
             titulo_orig = this.getTitle();
             this.setTitle(titulo_orig + "(Grabando...)");
+            this.botonStop.setVisible(true);
+            this.botonGrabar.setVisible(false);
         }
 
     }//GEN-LAST:event_botonGrabarActionPerformed
@@ -121,6 +105,8 @@ public class VentanaInternaGrabador extends javax.swing.JInternalFrame {
         if (recorder != null) {
             recorder.stop();
             this.setTitle(titulo_orig);
+            this.botonStop.setVisible(false);
+            this.botonGrabar.setVisible(true);
         }
     }//GEN-LAST:event_botonStopActionPerformed
 

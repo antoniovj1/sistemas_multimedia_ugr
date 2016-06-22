@@ -7,7 +7,6 @@ package practicaFinal;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import sm.image.BlendOp;
 
@@ -17,7 +16,6 @@ import sm.image.BlendOp;
  */
 public class VentanaBlending extends VentanaInternaLienzo {
 
-    private final VentanaPrincipal ventanaPadre = null;
     private BufferedImage imgIzq;
     private BufferedImage imgDer;
     private boolean mezcladoFinalizado;
@@ -30,12 +28,7 @@ public class VentanaBlending extends VentanaInternaLienzo {
     public VentanaBlending(VentanaPrincipal ventanaPadre) {
         super(ventanaPadre);
         mezcladoFinalizado = false;
-         
-        /**
-         * @TODO Preguntar si hay una solución más simple
-         * @see http://chuwiki.chuidiang.org/index.php?title=FocusListener_y_FocusAdapter
-         * @see https://docs.oracle.com/javase/tutorial/uiswing/components/rootpane.html
-         */
+
         this.getContentPane().addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent evt) {
