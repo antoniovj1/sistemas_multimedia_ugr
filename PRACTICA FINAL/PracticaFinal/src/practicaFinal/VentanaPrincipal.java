@@ -1188,22 +1188,28 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         Point p = new Point((int) (width * cos + height * sin), (int) (width * sin + height * cos));
         Point p2 = new Point();
 
-        BufferedImage out = new BufferedImage(p.x, p.y, imagen.getType());
-        Graphics2D g2 = out.createGraphics();
-        g2.setPaint(Color.WHITE);
-        g2.fillRect(0, 0, p.x, p.y);
+        try {
+            BufferedImage out = new BufferedImage(p.x, p.y, imagen.getType());
 
-        p2.setLocation(p);
-        p.setLocation(p.x / 2, p.y / 2);
+            Graphics2D g2 = out.createGraphics();
+            g2.setPaint(Color.WHITE);
+            g2.fillRect(0, 0, p.x, p.y);
 
-        AffineTransform at = AffineTransform.getRotateInstance(r, p.x, p.y);
-        p.setLocation((p2.x - width) / 2, (p2.y - height) / 2);
-        at.translate(p.x, p.y);
+            p2.setLocation(p);
+            p.setLocation(p.x / 2, p.y / 2);
 
-        AffineTransformOp atop;
-        atop = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+            AffineTransform at = AffineTransform.getRotateInstance(r, p.x, p.y);
+            p.setLocation((p2.x - width) / 2, (p2.y - height) / 2);
+            at.translate(p.x, p.y);
 
-        return atop.filter(imagen, null);
+            AffineTransformOp atop;
+            atop = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+
+            return atop.filter(imagen, null);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "No se pudo rotar", "Error", 0);
+            return imagen;
+        }
     }
 
 
@@ -1631,7 +1637,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             } else if (vw instanceof VentanaInternaVideo) {
                 img = ((VentanaInternaVideo) vw).getFrame();
             }
-            
+
             VentanaInternaLienzo vi = new VentanaInternaLienzo(this);
             vi.getLienzo().setImage(img);
             this.escritorio.add(vi);

@@ -6,6 +6,7 @@
 package practicaFinal;
 
 import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamDiscoveryService;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamPicker;
 import com.github.sarxos.webcam.WebcamResolution;
@@ -27,6 +28,12 @@ public class VentanaInternaWebCam extends javax.swing.JInternalFrame {
     public VentanaInternaWebCam() {
         initComponents();
         init();
+
+        //Detengo la busqueda de camaras al encontar una
+        //Quitando las dos siguientes lineas se queda buscando
+        //Mientras la ventana siga abierta.
+        WebcamDiscoveryService discovery = Webcam.getDiscoveryService();
+        discovery.stop();
     }
 
     public BufferedImage getFrame() {
@@ -62,6 +69,7 @@ public class VentanaInternaWebCam extends javax.swing.JInternalFrame {
             };
 
             t.start();
+
         } else {
             JOptionPane.showMessageDialog(this, "No se han detectado ninguna WebCam", "Error", 0);
         }
@@ -81,9 +89,34 @@ public class VentanaInternaWebCam extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setPreferredSize(new java.awt.Dimension(320, 240));
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosed(evt);
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
+        //WebcamDiscoveryService discovery = Webcam.getDiscoveryService();
+        //discovery.stop();
+        if (webcam != null) {
+            webcam.close();
+        }
+    }//GEN-LAST:event_formInternalFrameClosed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
