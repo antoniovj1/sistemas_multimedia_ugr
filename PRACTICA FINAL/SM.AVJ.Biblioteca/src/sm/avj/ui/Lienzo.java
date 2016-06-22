@@ -273,6 +273,7 @@ public class Lienzo extends javax.swing.JPanel {
     public void setColorFrente(Color color) {
         if (sh != null) {
             sh.setColorFrente(color);
+            this.paint(this.getGraphics());
         }
     }
 
@@ -287,6 +288,7 @@ public class Lienzo extends javax.swing.JPanel {
     public void setColorFondo(Color color) {
         if (sh != null) {
             sh.setColorFondo(color);
+            this.paint(this.getGraphics());
         }
     }
 
